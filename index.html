@@ -122,7 +122,7 @@ h1 {
     margin-bottom: 15px;
 }
 
-input[type="text"] {
+input[type="text"], textarea {
     width: 100%;
     padding: 13px;
     border: 2px solid #ccc;
@@ -130,9 +130,10 @@ input[type="text"] {
     font-size: 16px;
     box-sizing: border-box;
     transition: border-color 0.3s;
+    font-family: inherit;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus, textarea:focus {
     border-color: var(--secondary-color);
     outline: none;
 }
@@ -225,7 +226,7 @@ button:hover {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .topic-table th {
@@ -369,7 +370,7 @@ button:hover {
     <div class="instructions-box">
         <b>📌 Assessment Instructions:</b>
         <ul>
-            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, and Word Problems</b> skills.</li>
+            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, Word Problems, and Addition/Subtraction Methods (With/Without Regrouping)</b>.</li>
             <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>.</li>
             <li>Real-time adaptive algorithm categorizes students into <b>Level 1 (Foundational)</b> or <b>Level 2 (Intermediate)</b>.</li>
             <li><b>Strict Window Policy:</b> Tab switching is actively monitored (Max 3 warnings).</li>
@@ -450,6 +451,7 @@ button:hover {
                 <th>Geometry %</th>
                 <th>Measurement %</th>
                 <th>Word Problems %</th>
+                <th>Method of Add/Sub (Regrouping) %</th>
                 <th>Tab Switches</th>
                 <th>Action</th>
             </tr>
@@ -519,23 +521,23 @@ const questionPool = [
     // --- LEVEL 1 (FOUNDATIONAL PRIMARY) ---
     { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
     { id: 2, level: 1, category: "numbers", skill: "Subtraction: Basic", title: "What is 20 - 7?", options: ["13", "14", "12"], correct: 0 },
-    { id: 3, level: 1, category: "numbers", skill: "Counting & Sequences", title: "Find the missing number: 5, 10, 15, __, 25", options: ["18", "20", "22"], correct: 1 },
+    { id: 3, level: 1, category: "regrouping", skill: "Addition Without Regrouping", type: "text_working", title: "Solve: 23 + 14. Type the answer and explain or show your steps without regrouping:", correctKeywords: ["37"], correctDisplay: "37 (20+10=30, 3+4=7)" },
     { id: 4, level: 1, category: "geometry", skill: "2D Shapes", title: "Which shape has 3 sides and 3 corners?", options: ["Square", "Triangle", "Circle"], correct: 1 },
     { id: 5, level: 1, category: "geometry", skill: "Shape Properties", title: "How many sides does a rectangle have?", options: ["4", "3", "5"], correct: 0 },
     { id: 6, level: 1, category: "numbers", skill: "Place Value: Tens & Ones", title: "In the number 47, which digit is in the tens place?", options: ["7", "4", "40"], correct: 1 },
-    { id: 7, level: 1, category: "numbers", skill: "Basic Multiplication", title: "What is 3 × 4?", options: ["7", "12", "10"], correct: 1 },
+    { id: 7, level: 1, category: "regrouping", skill: "Addition With Regrouping", type: "text_working", title: "Solve: 28 + 15. Type the step-by-step method showing how you regrouped the ones into tens:", correctKeywords: ["43"], correctDisplay: "43 (8+5=13, carry 1 ten)" },
     { id: 8, level: 1, category: "measurement", skill: "Time Reading", title: "If the short hand points to 3 and the long hand points to 12, what time is it?", options: ["12:03", "3:00", "3:12"], correct: 1 },
     { id: 9, level: 1, category: "word_problems", skill: "Word Problems: Addition", title: "Tom has 6 marbles. Mia gives him 5 more. How many marbles does Tom have in total?", options: ["11", "10", "12"], correct: 0 },
     { id: 10, level: 1, category: "word_problems", skill: "Word Problems: Subtraction", title: "There were 12 birds on a tree. 4 flew away. How many birds are left?", options: ["6", "8", "7"], correct: 1 },
     { id: 11, level: 1, category: "numbers", skill: "Comparing Numbers", title: "Which symbol makes this statement true? 28 ____ 32", options: [">", "<", "="], correct: 1 },
     { id: 12, level: 1, category: "numbers", skill: "Even & Odd Numbers", title: "Which of the following numbers is an EVEN number?", options: ["9", "13", "16"], correct: 2 },
-    { id: 13, level: 1, category: "measurement", skill: "Length Comparison", title: "Which object is usually the longest?", options: ["A pencil", "A bus", "A spoon"], correct: 1 },
+    { id: 13, level: 1, category: "regrouping", skill: "Subtraction Without Regrouping", type: "text_working", title: "Solve: 48 - 23. Type your answer and show your calculation method:", correctKeywords: ["25"], correctDisplay: "25 (8-3=5, 40-20=20)" },
     { id: 14, level: 1, category: "numbers", skill: "Basic Division", title: "Share 10 sweets equally between 2 children. How many sweets does each child get?", options: ["5", "2", "4"], correct: 0 },
     { id: 15, level: 1, category: "geometry", skill: "3D Shapes", title: "Which shape looks like a football?", options: ["Cube", "Sphere", "Cylinder"], correct: 1 },
     { id: 16, level: 1, category: "measurement", skill: "Days of the Week", title: "What day comes directly after Tuesday?", options: ["Monday", "Wednesday", "Thursday"], correct: 1 },
     { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", title: "What fraction represents half of an apple?", options: ["1/2", "1/4", "1/3"], correct: 0 },
     { id: 18, level: 1, category: "word_problems", skill: "Word Problems: Grouping", title: "Each cat has 4 legs. How many legs do 3 cats have altogether?", options: ["7", "12", "10"], correct: 1 },
-    { id: 19, level: 1, category: "numbers", skill: "Addition with Regrouping", title: "What is 29 + 14?", options: ["43", "33", "41"], correct: 0 },
+    { id: 19, level: 1, category: "regrouping", skill: "Subtraction With Regrouping", type: "text_working", title: "Solve: 52 - 17. Type your answer and describe how you borrowed/regrouped from the tens:", correctKeywords: ["35"], correctDisplay: "35 (borrow 1 ten to make 12 ones: 12-7=5, 4-1=3)" },
     { id: 20, level: 1, category: "numbers", skill: "Place Value Identification", title: "What is the value of 5 in 152?", options: ["5", "50", "500"], correct: 1 },
     { id: 21, level: 1, category: "measurement", skill: "Currency & Money", title: "How many 10-cent coins make 50 cents?", options: ["4", "5", "6"], correct: 1 },
     { id: 22, level: 1, category: "word_problems", skill: "Word Problems: Money", title: "Anna bought a book for $4 and a pen for $2. How much did she spend in total?", options: ["$6", "$8", "$2"], correct: 0 },
@@ -545,11 +547,11 @@ const questionPool = [
 
     // --- LEVEL 2 (INTERMEDIATE PRIMARY) ---
     { id: 26, level: 2, category: "numbers", skill: "Multiplication Tables", title: "What is 8 × 7?", options: ["54", "56", "64"], correct: 1 },
-    { id: 27, level: 2, category: "numbers", skill: "Long Division with Remainder", title: "What is 25 ÷ 4?", options: ["6 R 1", "5 R 3", "6 R 2"], correct: 0 },
+    { id: 27, level: 2, category: "regrouping", skill: "3-Digit Addition With Regrouping", type: "text_working", title: "Solve: 267 + 155. Type your answer and detail the step-by-step regrouping method used:", correctKeywords: ["422"], correctDisplay: "422 (7+5=12 carry 1, 6+5+1=12 carry 1, 2+1+1=4)" },
     { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", title: "Which fraction is equivalent to 2/4?", options: ["1/3", "1/2", "3/4"], correct: 1 },
     { id: 29, level: 2, category: "geometry", skill: "Perimeter", title: "A rectangle has a length of 6 cm and a width of 4 cm. What is its perimeter?", options: ["24 cm", "20 cm", "10 cm"], correct: 1 },
     { id: 30, level: 2, category: "geometry", skill: "Area", title: "What is the area of a square with side lengths of 5 cm?", options: ["20 cm²", "25 cm²", "10 cm²"], correct: 1 },
-    { id: 31, level: 2, category: "word_problems", skill: "Multi-Step Word Problems", title: "Leo had 30 stickers. He gave 10 to Sam and shared the rest equally among 2 friends. How many did each friend get?", options: ["10", "15", "20"], correct: 0 },
+    { id: 31, level: 2, category: "regrouping", skill: "3-Digit Subtraction Across Zeros", type: "text_working", title: "Solve: 500 - 238. Type your answer and explain how you regrouped across zeros:", correctKeywords: ["262"], correctDisplay: "262 (regroup 500 into 4 hundreds 9 tens 10 ones)" },
     { id: 32, level: 2, category: "numbers", skill: "Decimals", title: "What is 3.5 + 2.4?", options: ["5.9", "6.1", "5.1"], correct: 0 },
     { id: 33, level: 2, category: "measurement", skill: "Unit Conversions", title: "How many centimeters are in 3 meters?", options: ["30 cm", "300 cm", "3000 cm"], correct: 1 },
     { id: 34, level: 2, category: "measurement", skill: "Elapsed Time", title: "A movie starts at 2:15 PM and lasts 1 hour and 30 minutes. What time does it end?", options: ["3:45 PM", "3:30 PM", "4:15 PM"], correct: 0 },
@@ -567,7 +569,7 @@ const questionPool = [
     { id: 46, level: 2, category: "geometry", skill: "3D Nets", title: "How many flat square faces does a cube have?", options: ["4", "6", "8"], correct: 1 },
     { id: 47, level: 2, category: "numbers", skill: "Factors & Multiples", title: "Which of the following is a factor of 24?", options: ["5", "8", "9"], correct: 1 },
     { id: 48, level: 2, category: "measurement", skill: "Data & Charts", title: "If 1 symbol on a pictograph equals 4 books, how many books do 3.5 symbols represent?", options: ["12", "14", "16"], correct: 1 },
-    { id: 49, level: 2, category: "numbers", skill: "Subtraction with Borrowing", title: "What is 502 - 178?", options: ["324", "334", "328"], correct: 0 },
+    { id: 49, level: 2, category: "regrouping", skill: "Decimal Addition With Regrouping", type: "text_working", title: "Solve: 14.8 + 7.5. Type your answer and show your addition method:", correctKeywords: ["22.3"], correctDisplay: "22.3 (0.8+0.5=1.3 carry 1, 14+7+1=22)" },
     { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
 ];
 
@@ -587,15 +589,35 @@ function getNextAdaptiveQuestion(targetLevel) {
 
 function submitAnswer() {
     const q = activeQuestionsSequence[currentQuestionIndex];
-    const selected = document.querySelector('input[name="standard_answer"]:checked');
-    
-    if (!selected) {
-        alert("Please select an answer.");
-        return;
-    }
+    let isCorrect = false;
+    let selectedAnswerText = "";
+    let correctAnswerText = "";
 
-    const selectedIndex = Number(selected.value);
-    const isCorrect = selectedIndex === q.correct;
+    if (q.type === 'text_working') {
+        const inputElem = document.getElementById("typedWorkingAnswer");
+        if (!inputElem || !inputElem.value.trim()) {
+            alert("Please type your answer and method before submitting.");
+            return;
+        }
+
+        selectedAnswerText = inputElem.value.trim();
+        correctAnswerText = q.correctDisplay || q.correctKeywords.join(", ");
+
+        // Check if student's answer contains the core correct answer keyword
+        isCorrect = q.correctKeywords.some(kw => selectedAnswerText.includes(kw));
+
+    } else {
+        const selected = document.querySelector('input[name="standard_answer"]:checked');
+        if (!selected) {
+            alert("Please select an answer.");
+            return;
+        }
+
+        const selectedIndex = Number(selected.value);
+        isCorrect = selectedIndex === q.correct;
+        selectedAnswerText = q.options[selectedIndex];
+        correctAnswerText = q.options[q.correct];
+    }
     
     if (isCorrect) {
         score++;
@@ -608,8 +630,8 @@ function submitAnswer() {
         question: q.title,
         category: q.category,
         skill: q.skill,
-        selectedAnswer: q.options[selectedIndex],
-        correctAnswer: q.options[q.correct],
+        selectedAnswer: selectedAnswerText,
+        correctAnswer: correctAnswerText,
         isCorrect: isCorrect,
         questionLevel: q.level
     });
@@ -634,7 +656,8 @@ function calculateCategoryBreakdown() {
         numbers: { correct: 0, total: 0 },
         geometry: { correct: 0, total: 0 },
         measurement: { correct: 0, total: 0 },
-        word_problems: { correct: 0, total: 0 }
+        word_problems: { correct: 0, total: 0 },
+        regrouping: { correct: 0, total: 0 }
     };
 
     studentAnswersList.forEach(ans => {
@@ -696,7 +719,7 @@ function exitTeacherPortal() {
 
 function loadTeacherDashboard() {
     let tbody = document.getElementById("teacherTableBody");
-    tbody.innerHTML = `<tr><td colspan="11">Loading records from Cloud Database...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="12">Loading records from Cloud Database...</td></tr>`;
 
     const script = document.createElement('script');
     const callbackName = 'googleSheetsCallback_' + Math.floor(Math.random() * 1000000);
@@ -712,7 +735,7 @@ function loadTeacherDashboard() {
     script.onerror = function() {
         delete window[callbackName];
         if (document.body.contains(script)) document.body.removeChild(script);
-        tbody.innerHTML = `<tr><td colspan="11" style="color:red;">Error fetching records. Ensure Apps Script access is set to 'Anyone'.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="12" style="color:red;">Error fetching records. Ensure Apps Script access is set to 'Anyone'.</td></tr>`;
     };
 
     document.body.appendChild(script);
@@ -723,7 +746,7 @@ function renderTableData(records) {
     tbody.innerHTML = "";
 
     if (!records || records.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11">No student submissions recorded yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="12">No student submissions recorded yet.</td></tr>`;
         return;
     }
 
@@ -741,6 +764,7 @@ function renderTableData(records) {
                 <td>${b.geometry || '-'}</td>
                 <td>${b.measurement || '-'}</td>
                 <td>${b.word_problems || '-'}</td>
+                <td>${b.regrouping || '-'}</td>
                 <td>${switchBadge}</td>
                 <td><button class="btn-small btn-secondary" onclick="viewStudentDetails(${index})">View Analysis</button></td>
             </tr>
@@ -768,8 +792,8 @@ function viewStudentDetails(index) {
                         <span class="${statusClass}">${statusText}</span>
                     </div>
                     <div style="font-size:14px; color:#444; margin-bottom:8px;">${item.question}</div>
-                    <div style="font-size:13px; margin-bottom: 4px;"><b>Selected Answer:</b> ${item.selectedAnswer}</div>
-                    <div style="font-size:13px;"><b>Correct Answer:</b> ${item.correctAnswer}</div>
+                    <div style="font-size:13px; margin-bottom: 4px;"><b>Selected Answer / Method Typed:</b> ${item.selectedAnswer}</div>
+                    <div style="font-size:13px;"><b>Correct Answer / Model Method:</b> ${item.correctAnswer}</div>
                 </div>
             `;
         });
@@ -796,17 +820,17 @@ function exportClassExcel() {
         return;
     }
 
-    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Level Category,Numbers %,Geometry %,Measurement %,Word Problems %,Tab Switches,Date,Question Number,Category,Skill,Question Text,Student Answer,Correct Answer,Status\n";
+    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Level Category,Numbers %,Geometry %,Measurement %,Word Problems %,Method of Add/Sub (Regrouping) %,Tab Switches,Date,Question Number,Category,Skill,Question Text,Student Answer/Typed Method,Correct Answer/Model Method,Status\n";
     
     records.forEach(r => {
         let b = r.breakdown || {};
         if (r.details && r.details.length > 0) {
             r.details.forEach((d, idx) => {
                 let status = d.isCorrect ? "Correct" : "Incorrect";
-                csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.levelCategory || r.placement}","${b.numbers || '-'}","${b.geometry || '-'}","${b.measurement || '-'}","${b.word_problems || '-'}",${r.tabSwitches || 0},"${r.date}",${idx + 1},"${d.category || '-'}","${(d.skill || '').replace(/"/g, '""')}","${(d.question || '').replace(/"/g, '""')}","${(d.selectedAnswer || '').replace(/"/g, '""')}","${(d.correctAnswer || '').replace(/"/g, '""')}","${status}"\n`;
+                csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.levelCategory || r.placement}","${b.numbers || '-'}","${b.geometry || '-'}","${b.measurement || '-'}","${b.word_problems || '-'}","${b.regrouping || '-'}",${r.tabSwitches || 0},"${r.date}",${idx + 1},"${d.category || '-'}","${(d.skill || '').replace(/"/g, '""')}","${(d.question || '').replace(/"/g, '""')}","${(d.selectedAnswer || '').replace(/"/g, '""')}","${(d.correctAnswer || '').replace(/"/g, '""')}","${status}"\n`;
             });
         } else {
-            csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.levelCategory || r.placement}","${b.numbers || '-'}","${b.geometry || '-'}","${b.measurement || '-'}","${b.word_problems || '-'}",${r.tabSwitches || 0},"${r.date}",N/A,N/A,N/A,N/A,N/A,N/A,N/A\n`;
+            csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.levelCategory || r.placement}","${b.numbers || '-'}","${b.geometry || '-'}","${b.measurement || '-'}","${b.word_problems || '-'}","${b.regrouping || '-'}",${r.tabSwitches || 0},"${r.date}",N/A,N/A,N/A,N/A,N/A,N/A,N/A\n`;
         }
     });
 
@@ -881,15 +905,22 @@ function renderQuestion() {
         badge.style.color = "#0f4c81";
     }
 
-    let html = `
-        <div class="question">${q.title}</div>
-        ${q.options.map((opt, idx) => `
+    let html = `<div class="question">${q.title}</div>`;
+
+    if (q.type === 'text_working') {
+        html += `
+            <div style="margin-top:15px;">
+                <textarea id="typedWorkingAnswer" rows="4" placeholder="Type your answer and explain your working/method here (e.g., 43 because 8+5=13, carry 1 ten)..."></textarea>
+            </div>
+        `;
+    } else {
+        html += q.options.map((opt, idx) => `
             <label class="option">
                 <input type="radio" name="standard_answer" value="${idx}">
                 <span>${opt}</span>
             </label>
-        `).join('')}
-    `;
+        `).join('');
+    }
 
     document.getElementById("questionArea").innerHTML = html;
 }
