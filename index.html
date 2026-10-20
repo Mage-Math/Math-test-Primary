@@ -346,7 +346,8 @@ button:hover {
 
     <div class="header-logo">
         <div class="logo-container">
-            <img src="logo.png" alt="MAGE HYBRID LEARNING" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block';">
+            <!-- EMBEDDED LOGO WITH LOCAL FILE FALLBACK -->
+            <img src="logo.png" alt="MAGE HYBRID LEARNING" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 350 60\' width=\'280\' height=\'50\'><text x=\'0\' y=\'40\' font-family=\'Segoe UI, sans-serif\' font-size=\'32\' font-weight=\'800\' fill=\'%230f4c81\'>MAGE <tspan fill=\'%2316a34a\'>HYBRID LEARNING</tspan></text></svg>';">
             <div id="altLogo" class="logo-fallback" style="display:none;">MAGE <span>HYBRID LEARNING</span></div>
         </div>
     </div>
