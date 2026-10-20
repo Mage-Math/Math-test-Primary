@@ -500,7 +500,6 @@ function handleTabSwitch() {
     }
 }
 
-/* 50 EVALUATION QUESTIONS SPREAD ACROSS NUMBERS, GEOMETRY, MEASUREMENT, AND WORD PROBLEMS */
 const questionPool = [
     // --- LEVEL 1 (FOUNDATIONAL PRIMARY) ---
     { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
@@ -855,7 +854,6 @@ function finishTest() {
     let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
     let percentage = Math.round((score / totalPoints) * 100);
     
-    // Explicit Level Category Designation
     let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate Math)" : "Level 1 (Foundational Math)";
 
     document.getElementById("displayStudentName").textContent = studentName;
