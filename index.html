@@ -367,13 +367,12 @@ button:hover {
     <p class="subtitle">Adaptive Multi-Level Placement Test for Primary Learners</p>
 
     <div class="instructions-box">
-        <b>📌 Adaptive Assessment Instructions:</b>
+        <b>📌 Assessment Instructions:</b>
         <ul>
-            <li><b>Real-Time Adaptive Algorithm:</b> Questions dynamically adjust based on your answers to evaluate true capability[cite: 1].</li>
-            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, and Word Problems</b>[cite: 1].</li>
-            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>[cite: 1].</li>
-            <li>Categorizes students into <b>Level 1 (Foundational)</b> or <b>Level 2 (Intermediate)</b>[cite: 1].</li>
-            <li><b>Strict Window Policy:</b> Tab switching is actively monitored (Max 3 warnings)[cite: 1].</li>
+            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, and Word Problems</b> skills.</li>
+            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>.</li>
+            <li>Real-time adaptive algorithm categorizes students into <b>Level 1 (Foundational)</b> or <b>Level 2 (Intermediate)</b>.</li>
+            <li><b>Strict Window Policy:</b> Tab switching is actively monitored (Max 3 warnings).</li>
         </ul>
     </div>
 
@@ -398,7 +397,7 @@ button:hover {
     </div>
 
     <div id="tabWarning" class="warning-banner hidden">
-        ⚠️ Warning: Switching tabs is strictly prohibited! Recorded Violations: <span id="switchCountDisplay">0</span> / 3[cite: 1]
+        ⚠️ Warning: Switching tabs is strictly prohibited! Recorded Violations: <span id="switchCountDisplay">0</span> / 3
     </div>
 
     <div id="questionArea"></div>
@@ -416,7 +415,7 @@ button:hover {
         <div class="result-box">
             <h2 style="color: var(--primary-color); margin-top:0;">Thank You, <span id="displayStudentName"></span>!</h2>
             <p style="font-size: 18px; color: #444; margin-top: 15px;">
-                Your adaptive performance analysis has been processed and saved[cite: 1].
+                Your performance profile has been saved.
             </p>
             <p id="placementDisplay" style="font-size: 19px; font-weight: bold; color: var(--primary-color);"></p>
             <p id="autoSubmitReason" style="color: #dc2626; font-weight: bold;"></p>
@@ -432,7 +431,7 @@ button:hover {
         <button class="teacher-btn" onclick="exitTeacherPortal()">Exit Portal</button>
     </div>
     <h1>Teacher / Admin Dashboard</h1>
-    <p class="subtitle">Detailed Skills Diagnostic & Roster Management[cite: 1]</p>
+    <p class="subtitle">Detailed Skills Diagnostic & Roster Management</p>
 
     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
         <button class="btn-secondary" onclick="exportClassExcel()">📊 Export Results for MS Excel</button>
@@ -473,46 +472,45 @@ button:hover {
 </div>
 
 <script>
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc8jh-K8C6g0xlT4jthiX5rzzWrhX7yYravg6Pz9vkUe_pgnGfkPqlKps59D6veey_/exec";[cite: 1]
-const TEACHER_PIN = "egam@2026";[cite: 1]
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvKVfMRycRC59r42jKw7OCeIJFl60pSi-cIXwAD2Xa8v1F0Y5pDXje9rWk_8MGcyPWvQ/exec";
+const TEACHER_PIN = "egam@2026";
 
-const TIME_LIMIT_SECONDS = 30 * 60;[cite: 1]
-const MAX_TAB_SWITCHES = 3;[cite: 1]
-const MAX_TEST_QUESTIONS = 25;[cite: 1]
+const TIME_LIMIT_SECONDS = 30 * 60;
+const MAX_TAB_SWITCHES = 3;
+const MAX_TEST_QUESTIONS = 25;
 
-let studentName = "";[cite: 1]
-let currentQuestionIndex = 0;[cite: 1]
-let score = 0;[cite: 1]
+let studentName = "";
+let currentQuestionIndex = 0;
+let score = 0;
 
-let studentAnswersList = [];[cite: 1]
-let currentLoadedRecords = [];[cite: 1]
+let studentAnswersList = [];
+let currentLoadedRecords = [];
 
-let timerInterval = null;[cite: 1]
-let timeRemaining = TIME_LIMIT_SECONDS;[cite: 1]
-let testStartTime = null;[cite: 1]
+let timerInterval = null;
+let timeRemaining = TIME_LIMIT_SECONDS;
+let testStartTime = null;
 
-let tabSwitchCount = 0;[cite: 1]
-let isTestActive = false;[cite: 1]
+let tabSwitchCount = 0;
+let isTestActive = false;
 
-/* ADAPTIVE ALGORITHM CONTROL VARIABLES */
-let activeQuestionsSequence = [];[cite: 1]
-let currentAdaptationLevel = 1; // 1 = Level 1 (Foundational), 2 = Level 2 (Intermediate)[cite: 1]
-let usedQuestionIds = new Set();[cite: 1]
+let activeQuestionsSequence = [];
+let currentAdaptationLevel = 1; 
+let usedQuestionIds = new Set();
 
-document.addEventListener("visibilitychange", handleTabSwitch);[cite: 1]
+document.addEventListener("visibilitychange", handleTabSwitch);
 
 function handleTabSwitch() {
     if (document.hidden && isTestActive) {
-        tabSwitchCount++;[cite: 1]
-        document.getElementById("tabWarning").classList.remove("hidden");[cite: 1]
-        document.getElementById("switchCountDisplay").textContent = tabSwitchCount;[cite: 1]
+        tabSwitchCount++;
+        document.getElementById("tabWarning").classList.remove("hidden");
+        document.getElementById("switchCountDisplay").textContent = tabSwitchCount;
 
         if (tabSwitchCount > MAX_TAB_SWITCHES) {
-            alert(`Violation threshold exceeded! Switching tabs is strictly prohibited. Your assessment has been automatically submitted.`);[cite: 1]
-            document.getElementById("autoSubmitReason").textContent = "Note: Assessment was automatically submitted due to a violation of the tab switch policy.";[cite: 1]
-            finishTest();[cite: 1]
+            alert(`Violation threshold exceeded! Switching tabs is strictly prohibited. Your assessment has been automatically submitted.`);
+            document.getElementById("autoSubmitReason").textContent = "Note: Assessment was automatically submitted due to a violation of the tab switch policy.";
+            finishTest();
         } else {
-            alert(`WARNING: Switching tabs is strictly prohibited! Violation ${tabSwitchCount} recorded.`);[cite: 1]
+            alert(`WARNING: Switching tabs is strictly prohibited! Violation ${tabSwitchCount} recorded.`);
         }
     }
 }
@@ -573,24 +571,20 @@ const questionPool = [
     { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
 ];
 
-/* ALGORITHM 1: ADAPTIVE ITEM SELECTION ENGINES */
 function getNextAdaptiveQuestion(targetLevel) {
     let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
     
-    // Fallback: If no unused items remain at the targeted adaptation level, fetch any unused item
     if (candidates.length === 0) {
         candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
     }
     
     if (candidates.length === 0) return null;
     
-    // Random selection from filtered candidates
     let selected = candidates[Math.floor(Math.random() * candidates.length)];
     usedQuestionIds.add(selected.id);
     return selected;
 }
 
-/* ALGORITHM 2: ANSWER VERIFICATION & ADAPTATION ROUTER */
 function submitAnswer() {
     const q = activeQuestionsSequence[currentQuestionIndex];
     const selected = document.querySelector('input[name="standard_answer"]:checked');
@@ -605,10 +599,8 @@ function submitAnswer() {
     
     if (isCorrect) {
         score++;
-        // Algorithm step: Increase difficulty level on correct answer
         currentAdaptationLevel = 2; 
     } else {
-        // Algorithm step: Recalibrate back to foundational level on error
         currentAdaptationLevel = 1; 
     }
 
@@ -637,7 +629,6 @@ function submitAnswer() {
     }
 }
 
-/* ALGORITHM 3: SKILL CATEGORY BREAKDOWN ALGORITHM */
 function calculateCategoryBreakdown() {
     let totals = {
         numbers: { correct: 0, total: 0 },
@@ -667,7 +658,6 @@ function calculateCategoryBreakdown() {
     return breakdown;
 }
 
-/* ALGORITHM 4: LEVEL CATEGORIZATION THRESHOLD ALGORITHM */
 function finishTest() {
     if (!isTestActive && document.getElementById("testScreen").classList.contains("hidden")) return;
     
@@ -679,9 +669,6 @@ function finishTest() {
     let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
     let percentage = Math.round((score / totalPoints) * 100);
     
-    // Categorization Logic Rules:
-    // If accuracy >= 60%, assign to Level 2 (Intermediate)
-    // If accuracy < 60%, assign to Level 1 (Foundational)
     let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate Math)" : "Level 1 (Foundational Math)";
 
     document.getElementById("displayStudentName").textContent = studentName;
@@ -881,7 +868,6 @@ function renderQuestion() {
     const q = activeQuestionsSequence[currentQuestionIndex];
     document.getElementById("questionNumber").textContent = `${currentQuestionIndex + 1}`;
     
-    // Update live adaptive level indicator badge
     const badge = document.getElementById("currentLevelBadge");
     if (q.level === 2) {
         badge.textContent = "Level 2 (Intermediate Item)";
