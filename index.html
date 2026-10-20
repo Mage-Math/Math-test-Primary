@@ -333,31 +333,34 @@ button:hover {
     margin-bottom: 5px;
 }
 
-/* PROPER FRACTION STYLING */
-.frac {
+/* VERTICAL FRACTION DISPLAY */
+.fraction {
     display: inline-flex;
     flex-direction: column;
     vertical-align: middle;
     text-align: center;
     font-size: 0.9em;
     padding: 0 4px;
+    line-height: 1.1;
 }
-.frac .top {
+.fraction .numerator {
     border-bottom: 2px solid #333;
-    padding-bottom: 1px;
+    padding-bottom: 2px;
+    font-weight: bold;
 }
-.frac .bottom {
-    padding-top: 1px;
+.fraction .denominator {
+    padding-top: 2px;
+    font-weight: bold;
 }
 
-/* COLUMN WORKING GRID STYLING */
+/* COLUMN WORKING PLACE-VALUE GRID STYLING */
 .column-grid-wrapper {
     background: #f8fafc;
     border: 2px dashed #0f4c81;
     padding: 20px;
     border-radius: 12px;
     margin: 20px 0;
-    max-width: 320px;
+    display: inline-block;
 }
 
 .column-grid-table {
@@ -373,8 +376,8 @@ button:hover {
 }
 
 .column-input {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     text-align: center;
     font-size: 20px;
     font-weight: bold;
@@ -420,9 +423,9 @@ button:hover {
         <b>📌 Assessment Instructions:</b>
         <ul>
             <li>Evaluates <b>Numbers & Operations, Geometry, Measurement, Word Problems, and Column Calculation Methods</b>.</li>
-            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>.</li>
-            <li>Type individual digits directly into place-value column boxes for method questions.</li>
-            <li><b>Strict Window Policy:</b> Tab switching is actively monitored (Max 3 warnings).</li>
+            <li>Total Assessment: <b>25 Questions</b> | Time Limit: <b>30 Minutes</b>.</li>
+            <li>For calculation questions, type each digit into the corresponding column box.</li>
+            <li><b>Strict Window Policy:</b> Tab switching is strictly monitored (Max 3 warnings).</li>
         </ul>
     </div>
 
@@ -439,9 +442,7 @@ button:hover {
 <!-- TEST SCREEN -->
 <div id="testScreen" class="hidden">
     <div class="header-status">
-        <div>
-            <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
-        </div>
+        <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
         <div class="timer-box">Time Left: <span id="timeDisplay">30:00</span></div>
     </div>
 
@@ -565,16 +566,16 @@ function handleTabSwitch() {
     }
 }
 
-// PROPER FRACTION HTML BUILDER
-function frac(n, d) {
-    return `<span class="frac"><span class="top">${n}</span><span class="bottom">${d}</span></span>`;
+// VERTICAL FRACTION FORMATTING FUNCTION
+function buildFractionHTML(num, den) {
+    return `<span class="fraction"><span class="numerator">${num}</span><span class="denominator">${den}</span></span>`;
 }
 
 const questionPool = [
-    // --- LEVEL 1 (FOUNDATIONAL PRIMARY) ---
+    // --- LEVEL 1 QUESTIONS ---
     { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
     { id: 2, level: 1, category: "numbers", skill: "Subtraction: Basic", title: "What is 20 - 7?", options: ["13", "14", "12"], correct: 0 },
-    { id: 3, level: 1, category: "regrouping", skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 by typing each digit into the Tens and Ones column boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37", decimal: false },
+    { id: 3, level: 1, category: "regrouping", skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 by typing each digit into the column boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37", decimal: false },
     { id: 4, level: 1, category: "geometry", skill: "2D Shapes", title: "Which shape has 3 sides and 3 corners?", options: ["Square", "Triangle", "Circle"], correct: 1 },
     { id: 5, level: 1, category: "geometry", skill: "Shape Properties", title: "How many sides does a rectangle have?", options: ["4", "3", "5"], correct: 0 },
     { id: 6, level: 1, category: "numbers", skill: "Place Value: Tens & Ones", title: "In the number 47, which digit is in the tens place?", options: ["7", "4", "40"], correct: 1 },
@@ -588,7 +589,7 @@ const questionPool = [
     { id: 14, level: 1, category: "numbers", skill: "Basic Division", title: "Share 10 sweets equally between 2 children. How many sweets does each child get?", options: ["5", "2", "4"], correct: 0 },
     { id: 15, level: 1, category: "geometry", skill: "3D Shapes", title: "Which shape looks like a football?", options: ["Cube", "Sphere", "Cylinder"], correct: 1 },
     { id: 16, level: 1, category: "measurement", skill: "Days of the Week", title: "What day comes directly after Tuesday?", options: ["Monday", "Wednesday", "Thursday"], correct: 1 },
-    { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", get title() { return `What fraction represents half of an apple?`; }, get options() { return [frac(1,2), frac(1,4), frac(1,3)]; }, correct: 0 },
+    { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", title: `What fraction represents half of an apple?`, get options() { return [buildFractionHTML(1,2), buildFractionHTML(1,4), buildFractionHTML(1,3)]; }, correct: 0 },
     { id: 18, level: 1, category: "word_problems", skill: "Word Problems: Grouping", title: "Each cat has 4 legs. How many legs do 3 cats have altogether?", options: ["7", "12", "10"], correct: 1 },
     { id: 19, level: 1, category: "regrouping", skill: "Subtraction With Regrouping", type: "column_grid", title: "Solve 52 - 17 in columns (type each digit in place value boxes):", num1: "52", num2: "17", op: "-", correctAns: "35", decimal: false },
     { id: 20, level: 1, category: "numbers", skill: "Place Value Identification", title: "What is the value of 5 in 152?", options: ["5", "50", "500"], correct: 1 },
@@ -598,20 +599,20 @@ const questionPool = [
     { id: 24, level: 1, category: "numbers", skill: "Skip Counting", title: "Count by 10s: 30, 40, 50, __, 70", options: ["55", "60", "65"], correct: 1 },
     { id: 25, level: 1, category: "measurement", skill: "Capacity", title: "Which container holds the MOST liquid?", options: ["A teacup", "A bucket", "A spoon"], correct: 1 },
 
-    // --- LEVEL 2 (INTERMEDIATE PRIMARY) ---
+    // --- LEVEL 2 QUESTIONS ---
     { id: 26, level: 2, category: "numbers", skill: "Multiplication Tables", title: "What is 8 × 7?", options: ["54", "56", "64"], correct: 1 },
-    { id: 27, level: 2, category: "regrouping", skill: "Decimal Addition With Regrouping", type: "column_grid", title: "Solve 14.8 + 7.5 by typing each digit into the Tens, Ones, and Tenths column boxes:", num1: "14.8", num2: "7.5", op: "+", correctAns: "22.3", decimal: true },
-    { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", get title() { return `Which fraction is equivalent to ${frac(2,4)}?`; }, get options() { return [frac(1,3), frac(1,2), frac(3,4)]; }, correct: 1 },
+    { id: 27, level: 2, category: "regrouping", skill: "Decimal Addition With Regrouping", type: "column_grid", title: "Solve 14.8 + 7.5 by typing each digit into the Tens, Ones, and Tenths column boxes below:", num1: "14.8", num2: "7.5", op: "+", correctAns: "22.3", decimal: true },
+    { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", title: `Which fraction is equivalent to ${buildFractionHTML(2,4)}?`, get options() { return [buildFractionHTML(1,3), buildFractionHTML(1,2), buildFractionHTML(3,4)]; }, correct: 1 },
     { id: 29, level: 2, category: "geometry", skill: "Perimeter", title: "A rectangle has a length of 6 cm and a width of 4 cm. What is its perimeter?", options: ["24 cm", "20 cm", "10 cm"], correct: 1 },
     { id: 30, level: 2, category: "geometry", skill: "Area", title: "What is the area of a square with side lengths of 5 cm?", options: ["20 cm²", "25 cm²", "10 cm²"], correct: 1 },
-    { id: 31, level: 2, category: "regrouping", skill: "3-Digit Addition With Regrouping", type: "column_grid", title: "Solve 267 + 155 by entering each digit into the Hundreds, Tens, and Ones boxes:", num1: "267", num2: "155", op: "+", correctAns: "422", decimal: false, 3digit: true },
+    { id: 31, level: 2, category: "regrouping", skill: "3-Digit Addition With Regrouping", type: "column_grid", title: "Solve 267 + 155 by entering each digit into the Hundreds, Tens, and Ones boxes:", num1: "267", num2: "155", op: "+", correctAns: "422", decimal: false, is3Digit: true },
     { id: 32, level: 2, category: "numbers", skill: "Decimals", title: "What is 3.5 + 2.4?", options: ["5.9", "6.1", "5.1"], correct: 0 },
     { id: 33, level: 2, category: "measurement", skill: "Unit Conversions", title: "How many centimeters are in 3 meters?", options: ["30 cm", "300 cm", "3000 cm"], correct: 1 },
     { id: 34, level: 2, category: "measurement", skill: "Elapsed Time", title: "A movie starts at 2:15 PM and lasts 1 hour and 30 minutes. What time does it end?", options: ["3:45 PM", "3:30 PM", "4:15 PM"], correct: 0 },
     { id: 35, level: 2, category: "numbers", skill: "Order of Operations", title: "Calculate: 10 + 2 × 5", options: ["60", "20", "25"], correct: 1 },
-    { id: 36, level: 2, category: "numbers", skill: "Adding Fractions", get title() { return `What is ${frac(3,8)} + ${frac(2,8)}?`; }, get options() { return [frac(5,16), frac(5,8), frac(1,8)]; }, correct: 1 },
+    { id: 36, level: 2, category: "numbers", skill: "Adding Fractions", title: `What is ${buildFractionHTML(3,8)} + ${buildFractionHTML(2,8)}?`, get options() { return [buildFractionHTML(5,16), buildFractionHTML(5,8), buildFractionHTML(1,8)]; }, correct: 1 },
     { id: 37, level: 2, category: "geometry", skill: "Angles", title: "What type of angle measures exactly 90 degrees?", options: ["Acute Angle", "Right Angle", "Obtuse Angle"], correct: 1 },
-    { id: 38, level: 2, category: "word_problems", skill: "Word Problems: Fractions", get title() { return `A pizza has 8 slices. Sarah eats 3 slices. What fraction of the pizza is remaining?`; }, get options() { return [frac(3,8), frac(5,8), frac(1,2)]; }, correct: 1 },
+    { id: 38, level: 2, category: "word_problems", skill: "Word Problems: Fractions", title: `A pizza has 8 slices. Sarah eats 3 slices. What fraction of the pizza is remaining?`, get options() { return [buildFractionHTML(3,8), buildFractionHTML(5,8), buildFractionHTML(1,2)]; }, correct: 1 },
     { id: 39, level: 2, category: "numbers", skill: "Percentages", title: "What is 50% of 80?", options: ["40", "20", "50"], correct: 0 },
     { id: 40, level: 2, category: "measurement", skill: "Mass & Weight", title: "How many grams are equal to 2.5 kilograms?", options: ["250 g", "2500 g", "25000 g"], correct: 1 },
     { id: 41, level: 2, category: "word_problems", skill: "Word Problems: Money & Change", title: "David bought a toy for $13.50 and paid with a $20 note. How much change should he receive?", options: ["$6.50", "$7.50", "$5.50"], correct: 0 },
@@ -622,7 +623,7 @@ const questionPool = [
     { id: 46, level: 2, category: "geometry", skill: "3D Nets", title: "How many flat square faces does a cube have?", options: ["4", "6", "8"], correct: 1 },
     { id: 47, level: 2, category: "numbers", skill: "Factors & Multiples", title: "Which of the following is a factor of 24?", options: ["5", "8", "9"], correct: 1 },
     { id: 48, level: 2, category: "measurement", skill: "Data & Charts", title: "If 1 symbol on a pictograph equals 4 books, how many books do 3.5 symbols represent?", options: ["12", "14", "16"], correct: 1 },
-    { id: 49, level: 2, category: "regrouping", skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", decimal: false, 3digit: true },
+    { id: 49, level: 2, category: "regrouping", skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", decimal: false, is3Digit: true },
     { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
 ];
 
@@ -669,7 +670,6 @@ function submitAnswer() {
         const selectedIndex = Number(selected.value);
         isCorrect = selectedIndex === q.correct;
         
-        // Strip HTML tags for reporting strings
         let tempDiv = document.createElement("div");
         tempDiv.innerHTML = q.options[selectedIndex];
         selectedAnswerText = tempDiv.textContent || tempDiv.innerText || "";
@@ -955,7 +955,7 @@ function renderQuestion() {
 
     if (q.type === 'column_grid') {
         let isDec = q.decimal || false;
-        let is3D = q.3digit || false;
+        let is3D = q.is3Digit || false;
         
         let n1Parts = q.num1.split('.');
         let n2Parts = q.num2.split('.');
@@ -963,7 +963,6 @@ function renderQuestion() {
         html += `
             <div class="column-grid-wrapper">
                 <table class="column-grid-table">
-                    <!-- REGROUPING / CARRY OVER HEADERS -->
                     <tr>
                         <td></td>
                         ${is3D ? '<td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
@@ -971,7 +970,6 @@ function renderQuestion() {
                         <td><input type="text" maxlength="1" class="column-input regroup-box"></td>
                         ${isDec ? '<td></td><td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
                     </tr>
-                    <!-- FIRST NUMBER -->
                     <tr>
                         <td></td>
                         ${is3D ? `<td>${n1Parts[0].length > 2 ? n1Parts[0][0] : ''}</td>` : ''}
@@ -979,15 +977,13 @@ function renderQuestion() {
                         <td>${n1Parts[0][n1Parts[0].length-1]}</td>
                         ${isDec ? `<td>.</td><td>${n1Parts[1] || '0'}</td>` : ''}
                     </tr>
-                    <!-- SECOND NUMBER -->
                     <tr>
                         <td style="color:var(--primary-color); padding-right:8px;">${q.op}</td>
-                        ${is3D ? `<td>${n2Parts[0].length > 2 ? n2Parts[0][0] : (n2Parts[0].length > 1 && !is3D ? '' : '')}</td>` : ''}
+                        ${is3D ? `<td>${n2Parts[0].length > 2 ? n2Parts[0][0] : ''}</td>` : ''}
                         <td>${n2Parts[0].length > 1 ? n2Parts[0][n2Parts[0].length-2] : ''}</td>
                         <td>${n2Parts[0][n2Parts[0].length-1]}</td>
                         ${isDec ? `<td>.</td><td>${n2Parts[1] || '0'}</td>` : ''}
                     </tr>
-                    <!-- RESULT ROW WITH INDIVIDUAL DIGIT INPUT BOXES -->
                     <tr>
                         <td class="grid-line"></td>
                         ${is3D ? '<td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>' : ''}
