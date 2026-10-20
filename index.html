@@ -422,9 +422,9 @@ button:hover {
     <div class="instructions-box">
         <b>📌 Assessment Instructions:</b>
         <ul>
-            
+            <li>Evaluates <b>Numbers & Operations, Geometry, Measurement, Word Problems, and Addition/Subtraction Methods</b>.</li>
             <li>Total Assessment: <b>25 Questions</b> | Time Limit: <b>30 Minutes</b>.</li>
-            
+            <li>Type each digit into place-value column boxes for addition and subtraction.</li>
             <li><b>Strict Window Policy:</b> Tab switching is strictly monitored (Max 3 warnings).</li>
         </ul>
     </div>
@@ -572,40 +572,42 @@ function buildFractionHTML(num, den) {
 }
 
 const questionPool = [
-    // --- LEVEL 1 QUESTIONS ---
+    // --- GUARANTEED NON-REGROUPING MANDATORY BASELINE QUESTIONS ---
+    { id: 101, level: 1, category: "regrouping", isRegrouping: false, isAddSub: true, skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 by typing each digit into the column boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37", decimal: false },
+    { id: 102, level: 1, category: "regrouping", isRegrouping: false, isAddSub: true, skill: "Subtraction Without Regrouping", type: "column_grid", title: "Solve 48 - 23 by typing each digit into the column boxes below:", num1: "48", num2: "23", op: "-", correctAns: "25", decimal: false },
+
+    // --- REGROUPING ESCALATION QUESTIONS (GIVEN IF NON-REGROUPING IS CORRECT) ---
+    { id: 201, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Addition With Regrouping", type: "column_grid", title: "Solve 28 + 15 by typing each digit into the column boxes below (use top box for carrying):", num1: "28", num2: "15", op: "+", correctAns: "43", decimal: false },
+    { id: 202, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Subtraction With Regrouping", type: "column_grid", title: "Solve 52 - 17 in columns (type each digit in place value boxes):", num1: "52", num2: "17", op: "-", correctAns: "35", decimal: false },
+    { id: 203, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Decimal Addition With Regrouping", type: "column_grid", title: "Solve 14.8 + 7.5 by typing each digit into the column boxes below:", num1: "14.8", num2: "7.5", op: "+", correctAns: "22.3", decimal: true },
+    { id: 204, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", decimal: false, is3Digit: true },
+
+    // --- GENERAL ITEM POOL ---
     { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
     { id: 2, level: 1, category: "numbers", skill: "Subtraction: Basic", title: "What is 20 - 7?", options: ["13", "14", "12"], correct: 0 },
-    { id: 3, level: 1, category: "regrouping", skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 by typing each digit into the column boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37", decimal: false },
     { id: 4, level: 1, category: "geometry", skill: "2D Shapes", title: "Which shape has 3 sides and 3 corners?", options: ["Square", "Triangle", "Circle"], correct: 1 },
     { id: 5, level: 1, category: "geometry", skill: "Shape Properties", title: "How many sides does a rectangle have?", options: ["4", "3", "5"], correct: 0 },
     { id: 6, level: 1, category: "numbers", skill: "Place Value: Tens & Ones", title: "In the number 47, which digit is in the tens place?", options: ["7", "4", "40"], correct: 1 },
-    { id: 7, level: 1, category: "regrouping", skill: "Addition With Regrouping", type: "column_grid", title: "Solve 28 + 15 by typing each digit in the column boxes (use top box for carrying):", num1: "28", num2: "15", op: "+", correctAns: "43", decimal: false },
     { id: 8, level: 1, category: "measurement", skill: "Time Reading", title: "If the short hand points to 3 and the long hand points to 12, what time is it?", options: ["12:03", "3:00", "3:12"], correct: 1 },
     { id: 9, level: 1, category: "word_problems", skill: "Word Problems: Addition", title: "Tom has 6 marbles. Mia gives him 5 more. How many marbles does Tom have in total?", options: ["11", "10", "12"], correct: 0 },
     { id: 10, level: 1, category: "word_problems", skill: "Word Problems: Subtraction", title: "There were 12 birds on a tree. 4 flew away. How many birds are left?", options: ["6", "8", "7"], correct: 1 },
     { id: 11, level: 1, category: "numbers", skill: "Comparing Numbers", title: "Which symbol makes this statement true? 28 ____ 32", options: [">", "<", "="], correct: 1 },
     { id: 12, level: 1, category: "numbers", skill: "Even & Odd Numbers", title: "Which of the following numbers is an EVEN number?", options: ["9", "13", "16"], correct: 2 },
-    { id: 13, level: 1, category: "regrouping", skill: "Subtraction Without Regrouping", type: "column_grid", title: "Solve 48 - 23 in columns by typing each answer digit:", num1: "48", num2: "23", op: "-", correctAns: "25", decimal: false },
     { id: 14, level: 1, category: "numbers", skill: "Basic Division", title: "Share 10 sweets equally between 2 children. How many sweets does each child get?", options: ["5", "2", "4"], correct: 0 },
     { id: 15, level: 1, category: "geometry", skill: "3D Shapes", title: "Which shape looks like a football?", options: ["Cube", "Sphere", "Cylinder"], correct: 1 },
     { id: 16, level: 1, category: "measurement", skill: "Days of the Week", title: "What day comes directly after Tuesday?", options: ["Monday", "Wednesday", "Thursday"], correct: 1 },
     { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", title: `What fraction represents half of an apple?`, get options() { return [buildFractionHTML(1,2), buildFractionHTML(1,4), buildFractionHTML(1,3)]; }, correct: 0 },
     { id: 18, level: 1, category: "word_problems", skill: "Word Problems: Grouping", title: "Each cat has 4 legs. How many legs do 3 cats have altogether?", options: ["7", "12", "10"], correct: 1 },
-    { id: 19, level: 1, category: "regrouping", skill: "Subtraction With Regrouping", type: "column_grid", title: "Solve 52 - 17 in columns (type each digit in place value boxes):", num1: "52", num2: "17", op: "-", correctAns: "35", decimal: false },
     { id: 20, level: 1, category: "numbers", skill: "Place Value Identification", title: "What is the value of 5 in 152?", options: ["5", "50", "500"], correct: 1 },
     { id: 21, level: 1, category: "measurement", skill: "Currency & Money", title: "How many 10-cent coins make 50 cents?", options: ["4", "5", "6"], correct: 1 },
     { id: 22, level: 1, category: "word_problems", skill: "Word Problems: Money", title: "Anna bought a book for $4 and a pen for $2. How much did she spend in total?", options: ["$6", "$8", "$2"], correct: 0 },
     { id: 23, level: 1, category: "geometry", skill: "Symmetry", title: "Which shape can be cut into two identical halves with a straight line down the middle?", options: ["Circle", "Scalene Triangle", "Irregular Polygon"], correct: 0 },
     { id: 24, level: 1, category: "numbers", skill: "Skip Counting", title: "Count by 10s: 30, 40, 50, __, 70", options: ["55", "60", "65"], correct: 1 },
     { id: 25, level: 1, category: "measurement", skill: "Capacity", title: "Which container holds the MOST liquid?", options: ["A teacup", "A bucket", "A spoon"], correct: 1 },
-
-    // --- LEVEL 2 QUESTIONS ---
     { id: 26, level: 2, category: "numbers", skill: "Multiplication Tables", title: "What is 8 × 7?", options: ["54", "56", "64"], correct: 1 },
-    { id: 27, level: 2, category: "regrouping", skill: "Decimal Addition With Regrouping", type: "column_grid", title: "Solve 14.8 + 7.5 by typing each digit into the Tens, Ones, and Tenths column boxes below:", num1: "14.8", num2: "7.5", op: "+", correctAns: "22.3", decimal: true },
     { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", title: `Which fraction is equivalent to ${buildFractionHTML(2,4)}?`, get options() { return [buildFractionHTML(1,3), buildFractionHTML(1,2), buildFractionHTML(3,4)]; }, correct: 1 },
     { id: 29, level: 2, category: "geometry", skill: "Perimeter", title: "A rectangle has a length of 6 cm and a width of 4 cm. What is its perimeter?", options: ["24 cm", "20 cm", "10 cm"], correct: 1 },
     { id: 30, level: 2, category: "geometry", skill: "Area", title: "What is the area of a square with side lengths of 5 cm?", options: ["20 cm²", "25 cm²", "10 cm²"], correct: 1 },
-    { id: 31, level: 2, category: "regrouping", skill: "3-Digit Addition With Regrouping", type: "column_grid", title: "Solve 267 + 155 by entering each digit into the Hundreds, Tens, and Ones boxes:", num1: "267", num2: "155", op: "+", correctAns: "422", decimal: false, is3Digit: true },
     { id: 32, level: 2, category: "numbers", skill: "Decimals", title: "What is 3.5 + 2.4?", options: ["5.9", "6.1", "5.1"], correct: 0 },
     { id: 33, level: 2, category: "measurement", skill: "Unit Conversions", title: "How many centimeters are in 3 meters?", options: ["30 cm", "300 cm", "3000 cm"], correct: 1 },
     { id: 34, level: 2, category: "measurement", skill: "Elapsed Time", title: "A movie starts at 2:15 PM and lasts 1 hour and 30 minutes. What time does it end?", options: ["3:45 PM", "3:30 PM", "4:15 PM"], correct: 0 },
@@ -623,16 +625,23 @@ const questionPool = [
     { id: 46, level: 2, category: "geometry", skill: "3D Nets", title: "How many flat square faces does a cube have?", options: ["4", "6", "8"], correct: 1 },
     { id: 47, level: 2, category: "numbers", skill: "Factors & Multiples", title: "Which of the following is a factor of 24?", options: ["5", "8", "9"], correct: 1 },
     { id: 48, level: 2, category: "measurement", skill: "Data & Charts", title: "If 1 symbol on a pictograph equals 4 books, how many books do 3.5 symbols represent?", options: ["12", "14", "16"], correct: 1 },
-    { id: 49, level: 2, category: "regrouping", skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", decimal: false, is3Digit: true },
     { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
 ];
 
-function getNextAdaptiveQuestion(targetLevel) {
-    let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
+function getNextAdaptiveQuestion(targetLevel, forceRegrouping = false) {
+    let candidates = [];
+    
+    if (forceRegrouping) {
+        candidates = questionPool.filter(q => q.isRegrouping === true && !usedQuestionIds.has(q.id));
+    } else {
+        candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
+    }
+
     if (candidates.length === 0) {
         candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
     }
     if (candidates.length === 0) return null;
+    
     let selected = candidates[Math.floor(Math.random() * candidates.length)];
     usedQuestionIds.add(selected.id);
     return selected;
@@ -698,7 +707,10 @@ function submitAnswer() {
     currentQuestionIndex++;
 
     if (currentQuestionIndex < MAX_TEST_QUESTIONS) {
-        let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel);
+        // ESCALATION RULE: If non-regrouping question answered correctly, force regrouping item next
+        let forceRegroup = (q.isAddSub && !q.isRegrouping && isCorrect);
+        let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel, forceRegroup);
+        
         if (nextQ) {
             activeQuestionsSequence.push(nextQ);
             renderQuestion();
@@ -938,8 +950,10 @@ function startTest() {
     activeQuestionsSequence = [];
     currentAdaptationLevel = 1;
 
-    let firstQ = getNextAdaptiveQuestion(1);
-    if (firstQ) activeQuestionsSequence.push(firstQ);
+    // FORCE FIRST QUESTION TO BE A MANDATORY ADDITION WITHOUT REGROUPING BASELINE
+    let firstQ = questionPool.find(q => q.id === 101);
+    usedQuestionIds.add(101);
+    activeQuestionsSequence.push(firstQ);
 
     document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("testScreen").classList.remove("hidden");
