@@ -422,9 +422,9 @@ button:hover {
     <div class="instructions-box">
         <b>📌 Assessment Instructions:</b>
         <ul>
-            <li>Evaluates <b>Numbers & Operations, Geometry, Measurement, Word Problems, and Addition/Subtraction Methods</b>.</li>
+            <li>Evaluates <b>Numbers & Operations, Geometry, Measurement, Word Problems, and Column Methods</b>.</li>
             <li>Total Assessment: <b>25 Questions</b> | Time Limit: <b>30 Minutes</b>.</li>
-            <li>Type each digit into place-value column boxes for addition and subtraction.</li>
+            <li>Type each digit into place-value column boxes for column calculation questions.</li>
             <li><b>Strict Window Policy:</b> Tab switching is strictly monitored (Max 3 warnings).</li>
         </ul>
     </div>
@@ -573,14 +573,15 @@ function buildFractionHTML(num, den) {
 
 const questionPool = [
     // --- GUARANTEED NON-REGROUPING MANDATORY BASELINE QUESTIONS ---
-    { id: 101, level: 1, category: "regrouping", isRegrouping: false, isAddSub: true, skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 by typing each digit into the column boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37", decimal: false },
-    { id: 102, level: 1, category: "regrouping", isRegrouping: false, isAddSub: true, skill: "Subtraction Without Regrouping", type: "column_grid", title: "Solve 48 - 23 by typing each digit into the column boxes below:", num1: "48", num2: "23", op: "-", correctAns: "25", decimal: false },
+    { id: 101, level: 1, category: "regrouping", isRegrouping: false, isAddSub: true, skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 in columns by typing each digit into the answer boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37" },
+    { id: 102, level: 1, category: "regrouping", isRegrouping: false, isAddSub: true, skill: "Subtraction Without Regrouping", type: "column_grid", title: "Solve 48 - 23 in columns by typing each digit into the answer boxes below:", num1: "48", num2: "23", op: "-", correctAns: "25" },
 
-    // --- REGROUPING ESCALATION QUESTIONS (GIVEN IF NON-REGROUPING IS CORRECT) ---
-    { id: 201, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Addition With Regrouping", type: "column_grid", title: "Solve 28 + 15 by typing each digit into the column boxes below (use top box for carrying):", num1: "28", num2: "15", op: "+", correctAns: "43", decimal: false },
-    { id: 202, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Subtraction With Regrouping", type: "column_grid", title: "Solve 52 - 17 in columns (type each digit in place value boxes):", num1: "52", num2: "17", op: "-", correctAns: "35", decimal: false },
-    { id: 203, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Decimal Addition With Regrouping", type: "column_grid", title: "Solve 14.8 + 7.5 by typing each digit into the column boxes below:", num1: "14.8", num2: "7.5", op: "+", correctAns: "22.3", decimal: true },
-    { id: 204, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", decimal: false, is3Digit: true },
+    // --- REGROUPING & MULTIPLICATION ESCALATION QUESTIONS (GIVEN IF NON-REGROUPING IS CORRECT) ---
+    { id: 201, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Addition With Regrouping", type: "column_grid", title: "Solve 28 + 15 in columns by typing each digit below (use the green top box for carrying):", num1: "28", num2: "15", op: "+", correctAns: "43" },
+    { id: 202, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "Subtraction With Regrouping", type: "column_grid", title: "Solve 52 - 17 in columns by typing each digit into the place-value boxes below:", num1: "52", num2: "17", op: "-", correctAns: "35" },
+    { id: 203, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "2-Digit by 1-Digit Multiplication", type: "column_grid", title: "Solve 14 × 3 in columns by entering each digit below (use the green top box for carrying):", num1: "14", num2: "3", op: "×", correctAns: "42" },
+    { id: 204, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "2-Digit by 1-Digit Multiplication With Regrouping", type: "column_grid", title: "Solve 24 × 5 in columns by entering each digit below:", num1: "24", num2: "5", op: "×", correctAns: "120", is3DigitAns: true },
+    { id: 205, level: 2, category: "regrouping", isRegrouping: true, isAddSub: true, skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", is3Digit: true },
 
     // --- GENERAL ITEM POOL ---
     { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
@@ -608,7 +609,6 @@ const questionPool = [
     { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", title: `Which fraction is equivalent to ${buildFractionHTML(2,4)}?`, get options() { return [buildFractionHTML(1,3), buildFractionHTML(1,2), buildFractionHTML(3,4)]; }, correct: 1 },
     { id: 29, level: 2, category: "geometry", skill: "Perimeter", title: "A rectangle has a length of 6 cm and a width of 4 cm. What is its perimeter?", options: ["24 cm", "20 cm", "10 cm"], correct: 1 },
     { id: 30, level: 2, category: "geometry", skill: "Area", title: "What is the area of a square with side lengths of 5 cm?", options: ["20 cm²", "25 cm²", "10 cm²"], correct: 1 },
-    { id: 32, level: 2, category: "numbers", skill: "Decimals", title: "What is 3.5 + 2.4?", options: ["5.9", "6.1", "5.1"], correct: 0 },
     { id: 33, level: 2, category: "measurement", skill: "Unit Conversions", title: "How many centimeters are in 3 meters?", options: ["30 cm", "300 cm", "3000 cm"], correct: 1 },
     { id: 34, level: 2, category: "measurement", skill: "Elapsed Time", title: "A movie starts at 2:15 PM and lasts 1 hour and 30 minutes. What time does it end?", options: ["3:45 PM", "3:30 PM", "4:15 PM"], correct: 0 },
     { id: 35, level: 2, category: "numbers", skill: "Order of Operations", title: "Calculate: 10 + 2 × 5", options: ["60", "20", "25"], correct: 1 },
@@ -707,7 +707,6 @@ function submitAnswer() {
     currentQuestionIndex++;
 
     if (currentQuestionIndex < MAX_TEST_QUESTIONS) {
-        // ESCALATION RULE: If non-regrouping question answered correctly, force regrouping item next
         let forceRegroup = (q.isAddSub && !q.isRegrouping && isCorrect);
         let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel, forceRegroup);
         
@@ -950,7 +949,7 @@ function startTest() {
     activeQuestionsSequence = [];
     currentAdaptationLevel = 1;
 
-    // FORCE FIRST QUESTION TO BE A MANDATORY ADDITION WITHOUT REGROUPING BASELINE
+    // MANDATORY FIRST QUESTION: ADDITION WITHOUT REGROUPING
     let firstQ = questionPool.find(q => q.id === 101);
     usedQuestionIds.add(101);
     activeQuestionsSequence.push(firstQ);
@@ -968,42 +967,38 @@ function renderQuestion() {
     let html = `<div class="question">${q.title}</div>`;
 
     if (q.type === 'column_grid') {
-        let isDec = q.decimal || false;
         let is3D = q.is3Digit || false;
+        let is3DAns = q.is3DigitAns || false;
         
-        let n1Parts = q.num1.split('.');
-        let n2Parts = q.num2.split('.');
+        let n1 = q.num1;
+        let n2 = q.num2;
 
         html += `
             <div class="column-grid-wrapper">
                 <table class="column-grid-table">
                     <tr>
                         <td></td>
-                        ${is3D ? '<td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
+                        ${(is3D || is3DAns) ? '<td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
                         <td><input type="text" maxlength="1" class="column-input regroup-box"></td>
                         <td><input type="text" maxlength="1" class="column-input regroup-box"></td>
-                        ${isDec ? '<td></td><td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
                     </tr>
                     <tr>
                         <td></td>
-                        ${is3D ? `<td>${n1Parts[0].length > 2 ? n1Parts[0][0] : ''}</td>` : ''}
-                        <td>${n1Parts[0].length > 1 ? n1Parts[0][n1Parts[0].length-2] : ''}</td>
-                        <td>${n1Parts[0][n1Parts[0].length-1]}</td>
-                        ${isDec ? `<td>.</td><td>${n1Parts[1] || '0'}</td>` : ''}
+                        ${(is3D || is3DAns) ? `<td>${n1.length > 2 ? n1[0] : ''}</td>` : ''}
+                        <td>${n1.length > 1 ? n1[n1.length-2] : ''}</td>
+                        <td>${n1[n1.length-1]}</td>
                     </tr>
                     <tr>
                         <td style="color:var(--primary-color); padding-right:8px;">${q.op}</td>
-                        ${is3D ? `<td>${n2Parts[0].length > 2 ? n2Parts[0][0] : ''}</td>` : ''}
-                        <td>${n2Parts[0].length > 1 ? n2Parts[0][n2Parts[0].length-2] : ''}</td>
-                        <td>${n2Parts[0][n2Parts[0].length-1]}</td>
-                        ${isDec ? `<td>.</td><td>${n2Parts[1] || '0'}</td>` : ''}
+                        ${(is3D || is3DAns) ? `<td>${n2.length > 2 ? n2[0] : ''}</td>` : ''}
+                        <td>${n2.length > 1 ? n2[n2.length-2] : ''}</td>
+                        <td>${n2[n2.length-1]}</td>
                     </tr>
                     <tr>
                         <td class="grid-line"></td>
-                        ${is3D ? '<td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>' : ''}
+                        ${(is3D || is3DAns) ? '<td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>' : ''}
                         <td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>
                         <td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>
-                        ${isDec ? '<td class="grid-line">.</td><td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>' : ''}
                     </tr>
                 </table>
             </div>
