@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAGE Primary Mathematics Diagnostic Assessment</title>
+
+<style>
+:root {
+    --primary-color: #0f4c81;
+    --secondary-color: #16a34a;
+    --accent-color: #1e3a8a;
+    --bg-gradient: linear-gradient(135deg, #0f4c81 0%, #16a34a 100%);
+    --card-bg: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 950px;
+    margin: 20px auto;
+    background: var(--card-bg);
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.teacher-btn {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.teacher-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.header-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.logo-img {
+    max-width: 280px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.logo-fallback {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo-fallback span {
+    color: var(--secondary-color);
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin: 10px 0 0 0;
+    font-size: 26px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 25px;
+    font-weight: 500;
+}
+
+.timer-box {
+    background: #f0fdf4;
+    border: 2px solid var(--secondary-color);
+    color: var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.header-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 13px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 13px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.3s, transform 0.1s;
+    font-weight: bold;
+}
+
+button:hover {
+    background: var(--accent-color);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+    background: #15803d;
+}
+
+.btn-small {
+    padding: 6px 12px;
+    font-size: 13px;
+    margin-top: 0;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    margin: 12px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.option input[type="radio"] {
+    margin-right: 12px;
+}
+
+.option:hover {
+    background: #f0fdf4;
+    border-color: var(--secondary-color);
+}
+
+.progress {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.question {
+    font-size: 19px;
+    font-weight: 600;
+    margin: 20px 0;
+    color: #111;
+    line-height: 1.6;
+}
+
+.result {
+    text-align: center;
+}
+
+.result-box {
+    background: #f0fdf4;
+    padding: 35px 25px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border-left: 6px solid var(--secondary-color);
+    text-align: center;
+}
+
+.topic-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.topic-table th, .topic-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.topic-table th {
+    background: var(--primary-color);
+    color: white;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.small {
+    font-size: 14px;
+    color: #666;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.modal.active {
+    display: flex !important;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #888;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.status-correct {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.status-incorrect {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.detail-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #f9fafb;
+    text-align: left;
+}
+
+.warning-banner {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.instructions-box {
+    background: #fffbe3;
+    border: 1px solid #ffe58f;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.instructions-box ul {
+    margin: 5px 0 0 20px;
+    padding: 0;
+}
+
+.instructions-box li {
+    margin-bottom: 5px;
+}
+
+.math-display {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    text-align: center;
+    margin: 15px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- START SCREEN -->
+<div id="startScreen">
+    <div class="top-bar">
+        <button class="teacher-btn" onclick="openTeacherLogin()">🔑 Teacher Portal</button>
+    </div>
+
+    <div class="header-logo">
+        <div class="logo-container">
+            <img src="logo.png" alt="MAGE HYBRID LEARNING" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block';">
+            <div id="altLogo" class="logo-fallback" style="display:none;">MAGE <span>HYBRID LEARNING</span></div>
+        </div>
+    </div>
+
+    <h1>Primary Mathematics Diagnostic Assessment</h1>
+    <p class="subtitle">Comprehensive Math Placement Test for Primary Learners</p>
+
+    <div class="instructions-box">
+        <b>📌 Assessment Instructions:</b>
+        <ul>
+            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, and Word Problems</b> skills.</li>
+            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>.</li>
+            <li>Classifies students into <b>Level 1 (Foundational)</b> or <b>Level 2 (Intermediate)</b>.</li>
+            <li><b>Strict Window Policy:</b> Switching tabs is strictly monitored (Max 3 warnings).</li>
+        </ul>
+    </div>
+
+    <label><b>Student Name</b></label>
+    <br><br>
+    <input type="text" id="studentName" placeholder="Enter full name">
+    <br>
+
+    <button onclick="startTest()">Start Diagnostic</button>
+
+    <p class="small">Time Limit: 30 Minutes</p>
+</div>
+
+<!-- TEST SCREEN -->
+<div id="testScreen" class="hidden">
+    <div class="header-status">
+        <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
+        <div class="timer-box">Time Left: <span id="timeDisplay">30:00</span></div>
+    </div>
+
+    <div id="tabWarning" class="warning-banner hidden">
+        ⚠️ Warning: Switching tabs is strictly prohibited! Recorded Violations: <span id="switchCountDisplay">0</span> / 3
+    </div>
+
+    <div id="questionArea"></div>
+
+    <div style="display:flex; gap:10px; align-items:center;">
+        <button onclick="submitAnswer()">Submit Answer</button>
+    </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="resultScreen" class="hidden">
+    <div class="result">
+        <h1>Assessment Submitted</h1>
+
+        <div class="result-box">
+            <h2 style="color: var(--primary-color); margin-top:0;">Thank You, <span id="displayStudentName"></span>!</h2>
+            <p style="font-size: 18px; color: #444; margin-top: 15px;">
+                Your performance profile has been saved.
+            </p>
+            <p id="placementDisplay" style="font-size: 19px; font-weight: bold; color: var(--primary-color);"></p>
+            <p id="autoSubmitReason" style="color: #dc2626; font-weight: bold;"></p>
+        </div>
+
+        <p id="savingMessage" style="font-weight: bold; color: var(--secondary-color);"></p>
+    </div>
+</div>
+
+<!-- TEACHER DASHBOARD SCREEN -->
+<div id="teacherScreen" class="hidden">
+    <div class="top-bar">
+        <button class="teacher-btn" onclick="exitTeacherPortal()">Exit Portal</button>
+    </div>
+    <h1>Teacher / Admin Dashboard</h1>
+    <p class="subtitle">Detailed Skills Diagnostic & Roster Management</p>
+
+    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <button class="btn-secondary" onclick="exportClassExcel()">📊 Export Results for MS Excel</button>
+        <button onclick="loadTeacherDashboard()" style="background:#0f4c81;">🔄 Refresh Cloud Data</button>
+    </div>
+
+    <table class="topic-table">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Time Taken</th>
+                <th>Score</th>
+                <th>%</th>
+                <th>Level Category</th>
+                <th>Numbers %</th>
+                <th>Geometry %</th>
+                <th>Measurement %</th>
+                <th>Word Problems %</th>
+                <th>Tab Switches</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="teacherTableBody"></tbody>
+    </table>
+</div>
+
+</div>
+
+<!-- STUDENT DETAILS MODAL -->
+<div id="detailModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalStudentName" style="color: var(--primary-color); margin-top:0;"></h2>
+        <p id="modalMeta" style="font-weight:bold;"></p>
+        <hr>
+        <div id="modalDetailsArea"></div>
+    </div>
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc8jh-K8C6g0xlT4jthiX5rzzWrhX7yYravg6Pz9vkUe_pgnGfkPqlKps59D6veey_/exec"; 
+const TEACHER_PIN = "egam@2026";
+
+const TIME_LIMIT_SECONDS = 30 * 60;
+const MAX_TAB_SWITCHES = 3;
+const MAX_TEST_QUESTIONS = 25;
+
+let studentName = "";
+let currentQuestionIndex = 0;
+let score = 0;
+
+let studentAnswersList = [];
+let currentLoadedRecords = [];
+
+let timerInterval = null;
+let timeRemaining = TIME_LIMIT_SECONDS;
+let testStartTime = null;
+
+let tabSwitchCount = 0;
+let isTestActive = false;
+
+let activeQuestionsSequence = [];
+let currentAdaptationLevel = 1; 
+let usedQuestionIds = new Set();
+
+document.addEventListener("visibilitychange", handleTabSwitch);
+
+function handleTabSwitch() {
+    if (document.hidden && isTestActive) {
+        tabSwitchCount++;
+        document.getElementById("tabWarning").classList.remove("hidden");
+        document.getElementById("switchCountDisplay").textContent = tabSwitchCount;
+
+        if (tabSwitchCount > MAX_TAB_SWITCHES) {
+            alert(`Violation threshold exceeded! Switching tabs is strictly prohibited. Your assessment has been automatically submitted.`);
+            document.getElementById("autoSubmitReason").textContent = "Note: Assessment was automatically submitted due to a violation of the tab switch policy.";
+            finishTest();
+        } else {
+            alert(`WARNING: Switching tabs is strictly prohibited! Violation ${tabSwitchCount} recorded.`);
+        }
+    }
+}
+
+/* 50 EVALUATION QUESTIONS SPREAD ACROSS NUMBERS, GEOMETRY, MEASUREMENT, AND WORD PROBLEMS */
+const questionPool = [
+    // --- LEVEL 1 (FOUNDATIONAL PRIMARY) ---
+    { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
+    { id: 2, level: 1, category: "numbers", skill: "Subtraction: Basic", title: "What is 20 - 7?", options: ["13", "14", "12"], correct: 0 },
+    { id: 3, level: 1, category: "numbers", skill: "Counting & Sequences", title: "Find the missing number: 5, 10, 15, __, 25", options: ["18", "20", "22"], correct: 1 },
+    { id: 4, level: 1, category: "geometry", skill: "2D Shapes", title: "Which shape has 3 sides and 3 corners?", options: ["Square", "Triangle", "Circle"], correct: 1 },
+    { id: 5, level: 1, category: "geometry", skill: "Shape Properties", title: "How many sides does a rectangle have?", options: ["4", "3", "5"], correct: 0 },
+    { id: 6, level: 1, category: "numbers", skill: "Place Value: Tens & Ones", title: "In the number 47, which digit is in the tens place?", options: ["7", "4", "40"], correct: 1 },
+    { id: 7, level: 1, category: "numbers", skill: "Basic Multiplication", title: "What is 3 × 4?", options: ["7", "12", "10"], correct: 1 },
+    { id: 8, level: 1, category: "measurement", skill: "Time Reading", title: "If the short hand points to 3 and the long hand points to 12, what time is it?", options: ["12:03", "3:00", "3:12"], correct: 1 },
+    { id: 9, level: 1, category: "word_problems", skill: "Word Problems: Addition", title: "Tom has 6 marbles. Mia gives him 5 more. How many marbles does Tom have in total?", options: ["11", "10", "12"], correct: 0 },
+    { id: 10, level: 1, category: "word_problems", skill: "Word Problems: Subtraction", title: "There were 12 birds on a tree. 4 flew away. How many birds are left?", options: ["6", "8", "7"], correct: 1 },
+    { id: 11, level: 1, category: "numbers", skill: "Comparing Numbers", title: "Which symbol makes this statement true? 28 ____ 32", options: [">", "<", "="], correct: 1 },
+    { id: 12, level: 1, category: "numbers", skill: "Even & Odd Numbers", title: "Which of the following numbers is an EVEN number?", options: ["9", "13", "16"], correct: 2 },
+    { id: 13, level: 1, category: "measurement", skill: "Length Comparison", title: "Which object is usually the longest?", options: ["A pencil", "A bus", "A spoon"], correct: 1 },
+    { id: 14, level: 1, category: "numbers", skill: "Basic Division", title: "Share 10 sweets equally between 2 children. How many sweets does each child get?", options: ["5", "2", "4"], correct: 0 },
+    { id: 15, level: 1, category: "geometry", skill: "3D Shapes", title: "Which shape looks like a football?", options: ["Cube", "Sphere", "Cylinder"], correct: 1 },
+    { id: 16, level: 1, category: "measurement", skill: "Days of the Week", title: "What day comes directly after Tuesday?", options: ["Monday", "Wednesday", "Thursday"], correct: 1 },
+    { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", title: "What fraction represents half of an apple?", options: ["1/2", "1/4", "1/3"], correct: 0 },
+    { id: 18, level: 1, category: "word_problems", skill: "Word Problems: Grouping", title: "Each cat has 4 legs. How many legs do 3 cats have altogether?", options: ["7", "12", "10"], correct: 1 },
+    { id: 19, level: 1, category: "numbers", skill: "Addition with Regrouping", title: "What is 29 + 14?", options: ["43", "33", "41"], correct: 0 },
+    { id: 20, level: 1, category: "numbers", skill: "Place Value Identification", title: "What is the value of 5 in 152?", options: ["5", "50", "500"], correct: 1 },
+    { id: 21, level: 1, category: "measurement", skill: "Currency & Money", title: "How many 10-cent coins make 50 cents?", options: ["4", "5", "6"], correct: 1 },
+    { id: 22, level: 1, category: "word_problems", skill: "Word Problems: Money", title: "Anna bought a book for $4 and a pen for $2. How much did she spend in total?", options: ["$6", "$8", "$2"], correct: 0 },
+    { id: 23, level: 1, category: "geometry", skill: "Symmetry", title: "Which shape can be cut into two identical halves with a straight line down the middle?", options: ["Circle", "Scalene Triangle", "Irregular Polygon"], correct: 0 },
+    { id: 24, level: 1, category: "numbers", skill: "Skip Counting", title: "Count by 10s: 30, 40, 50, __, 70", options: ["55", "60", "65"], correct: 1 },
+    { id: 25, level: 1, category: "measurement", skill: "Capacity", title: "Which container holds the MOST liquid?", options: ["A teacup", "A bucket", "A spoon"], correct: 1 },
+
+    // --- LEVEL 2 (INTERMEDIATE PRIMARY) ---
+    { id: 26, level: 2, category: "numbers", skill: "Multiplication Tables", title: "What is 8 × 7?", options: ["54", "56", "64"], correct: 1 },
+    { id: 27, level: 2, category: "numbers", skill: "Long Division with Remainder", title: "What is 25 ÷ 4?", options: ["6 R 1", "5 R 3", "6 R 2"], correct: 0 },
+    { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", title: "Which fraction is equivalent to 2/4?", options: ["1/3", "1/2", "3/4"], correct: 1 },
+    { id: 29, level: 2, category: "geometry", skill: "Perimeter", title: "A rectangle has a length of 6 cm and a width of 4 cm. What is its perimeter?", options: ["24 cm", "20 cm", "10 cm"], correct: 1 },
+    { id: 30, level: 2, category: "geometry", skill: "Area", title: "What is the area of a square with side lengths of 5 cm?", options: ["20 cm²", "25 cm²", "10 cm²"], correct: 1 },
+    { id: 31, level: 2, category: "word_problems", skill: "Multi-Step Word Problems", title: "Leo had 30 stickers. He gave 10 to Sam and shared the rest equally among 2 friends. How many did each friend get?", options: ["10", "15", "20"], correct: 0 },
+    { id: 32, level: 2, category: "numbers", skill: "Decimals", title: "What is 3.5 + 2.4?", options: ["5.9", "6.1", "5.1"], correct: 0 },
+    { id: 33, level: 2, category: "measurement", skill: "Unit Conversions", title: "How many centimeters are in 3 meters?", options: ["30 cm", "300 cm", "3000 cm"], correct: 1 },
+    { id: 34, level: 2, category: "measurement", skill: "Elapsed Time", title: "A movie starts at 2:15 PM and lasts 1 hour and 30 minutes. What time does it end?", options: ["3:45 PM", "3:30 PM", "4:15 PM"], correct: 0 },
+    { id: 35, level: 2, category: "numbers", skill: "Order of Operations", title: "Calculate: 10 + 2 × 5", options: ["60", "20", "25"], correct: 1 },
+    { id: 36, level: 2, category: "numbers", skill: "Adding Fractions", title: "What is 3/8 + 2/8?", options: ["5/16", "5/8", "1/8"], correct: 1 },
+    { id: 37, level: 2, category: "geometry", skill: "Angles", title: "What type of angle measures exactly 90 degrees?", options: ["Acute Angle", "Right Angle", "Obtuse Angle"], correct: 1 },
+    { id: 38, level: 2, category: "word_problems", skill: "Word Problems: Fractions", title: "A pizza has 8 slices. Sarah eats 3 slices. What fraction of the pizza is remaining?", options: ["3/8", "5/8", "1/2"], correct: 1 },
+    { id: 39, level: 2, category: "numbers", skill: "Percentages", title: "What is 50% of 80?", options: ["40", "20", "50"], correct: 0 },
+    { id: 40, level: 2, category: "measurement", skill: "Mass & Weight", title: "How many grams are equal to 2.5 kilograms?", options: ["250 g", "2500 g", "25000 g"], correct: 1 },
+    { id: 41, level: 2, category: "word_problems", skill: "Word Problems: Money & Change", title: "David bought a toy for $13.50 and paid with a $20 note. How much change should he receive?", options: ["$6.50", "$7.50", "$5.50"], correct: 0 },
+    { id: 42, level: 2, category: "geometry", skill: "Lines & Coordinates", title: "Lines that never cross or intersect each other are called:", options: ["Perpendicular lines", "Parallel lines", "Intersecting lines"], correct: 1 },
+    { id: 43, level: 2, category: "numbers", skill: "Rounding Numbers", title: "Round 468 to the nearest hundred.", options: ["400", "470", "500"], correct: 2 },
+    { id: 44, level: 2, category: "numbers", skill: "Negative Numbers", title: "What temperature is 5 degrees lower than 2°C?", options: ["-3°C", "-5°C", "3°C"], correct: 0 },
+    { id: 45, level: 2, category: "word_problems", skill: "Word Problems: Averages", title: "The scores of 3 games are 4, 6, and 8. What is the average score?", options: ["5", "6", "7"], correct: 1 },
+    { id: 46, level: 2, category: "geometry", skill: "3D Nets", title: "How many flat square faces does a cube have?", options: ["4", "6", "8"], correct: 1 },
+    { id: 47, level: 2, category: "numbers", skill: "Factors & Multiples", title: "Which of the following is a factor of 24?", options: ["5", "8", "9"], correct: 1 },
+    { id: 48, level: 2, category: "measurement", skill: "Data & Charts", title: "If 1 symbol on a pictograph equals 4 books, how many books do 3.5 symbols represent?", options: ["12", "14", "16"], correct: 1 },
+    { id: 49, level: 2, category: "numbers", skill: "Subtraction with Borrowing", title: "What is 502 - 178?", options: ["324", "334", "328"], correct: 0 },
+    { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
+];
+
+function openTeacherLogin() {
+    let pin = prompt("Enter Security Passcode to access Teacher Dashboard:");
+    if (pin === TEACHER_PIN) {
+        document.getElementById("startScreen").classList.add("hidden");
+        document.getElementById("resultScreen").classList.add("hidden");
+        document.getElementById("teacherScreen").classList.remove("hidden");
+        loadTeacherDashboard();
+    } else if (pin !== null) {
+        alert("Incorrect Passcode. Access Denied.");
+    }
+}
+
+function exitTeacherPortal() {
+    document.getElementById("teacherScreen").classList.add("hidden");
+    document.getElementById("startScreen").classList.remove("hidden");
+}
+
+function loadTeacherDashboard() {
+    let tbody = document.getElementById("teacherTableBody");
+    tbody.innerHTML = `<tr><td colspan="11">Loading records from Cloud Database...</td></tr>`;
+
+    const script = document.createElement('script');
+    const callbackName = 'googleSheetsCallback_' + Math.floor(Math.random() * 1000000);
+    
+    window[callbackName] = function(data) {
+        delete window[callbackName];
+        if (document.body.contains(script)) document.body.removeChild(script);
+        currentLoadedRecords = Array.isArray(data) ? data : [];
+        renderTableData(currentLoadedRecords);
+    };
+
+    script.src = `${GOOGLE_SCRIPT_URL}?callback=${callbackName}&_=${Date.now()}`;
+    script.onerror = function() {
+        delete window[callbackName];
+        if (document.body.contains(script)) document.body.removeChild(script);
+        tbody.innerHTML = `<tr><td colspan="11" style="color:red;">Error fetching records. Ensure Apps Script access is set to 'Anyone'.</td></tr>`;
+    };
+
+    document.body.appendChild(script);
+}
+
+function renderTableData(records) {
+    let tbody = document.getElementById("teacherTableBody");
+    tbody.innerHTML = "";
+
+    if (!records || records.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11">No student submissions recorded yet.</td></tr>`;
+        return;
+    }
+
+    records.forEach((r, index) => {
+        let switchBadge = r.tabSwitches > 0 ? `<span style="color:red; font-weight:bold;">${r.tabSwitches}</span>` : "0";
+        let b = r.breakdown || {};
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${r.name}</b></td>
+                <td>${r.timeTaken || 'N/A'}</td>
+                <td>${r.score} / ${r.total}</td>
+                <td>${r.percentage}%</td>
+                <td><b>${r.levelCategory || r.placement}</b></td>
+                <td>${b.numbers || '-'}</td>
+                <td>${b.geometry || '-'}</td>
+                <td>${b.measurement || '-'}</td>
+                <td>${b.word_problems || '-'}</td>
+                <td>${switchBadge}</td>
+                <td><button class="btn-small btn-secondary" onclick="viewStudentDetails(${index})">View Analysis</button></td>
+            </tr>
+        `;
+    });
+}
+
+function viewStudentDetails(index) {
+    let student = currentLoadedRecords[index];
+    if (!student) return;
+
+    document.getElementById("modalStudentName").textContent = student.name;
+    document.getElementById("modalMeta").textContent = `Time Elapsed: ${student.timeTaken || 'N/A'} | Score: ${student.score}/${student.total} (${student.percentage}%) | Level: ${student.levelCategory || student.placement} | Tab Switches: ${student.tabSwitches || 0}`;
+
+    let html = "";
+    if (student.details && student.details.length > 0) {
+        student.details.forEach((item, i) => {
+            let statusClass = item.isCorrect ? "status-correct" : "status-incorrect";
+            let statusText = item.isCorrect ? "✓ Correct" : "✗ Incorrect";
+
+            html += `
+                <div class="detail-card">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <b>Q${i + 1}: ${item.skill} (${(item.category || '').toUpperCase()})</b>
+                        <span class="${statusClass}">${statusText}</span>
+                    </div>
+                    <div style="font-size:14px; color:#444; margin-bottom:8px;">${item.question}</div>
+                    <div style="font-size:13px; margin-bottom: 4px;"><b>Selected Answer:</b> ${item.selectedAnswer}</div>
+                    <div style="font-size:13px;"><b>Correct Answer:</b> ${item.correctAnswer}</div>
+                </div>
+            `;
+        });
+    } else {
+        html = "<p>No detailed item analysis available for this entry.</p>";
+    }
+
+    document.getElementById("modalDetailsArea").innerHTML = html;
+    let modal = document.getElementById("detailModal");
+    modal.style.display = "flex";
+    modal.classList.add("active");
+}
+
+function closeModal() {
+    let modal = document.getElementById("detailModal");
+    modal.style.display = "none";
+    modal.classList.remove("active");
+}
+
+function exportClassExcel() {
+    let records = currentLoadedRecords;
+    if (!records || records.length === 0) {
+        alert("No results available to export.");
+        return;
+    }
+
+    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Level Category,Numbers %,Geometry %,Measurement %,Word Problems %,Tab Switches,Date,Question Number,Category,Skill,Question Text,Student Answer,Correct Answer,Status\n";
+    
+    records.forEach(r => {
+        let b = r.breakdown || {};
+        if (r.details && r.details.length > 0) {
+            r.details.forEach((d, idx) => {
+                let status = d.isCorrect ? "Correct" : "Incorrect";
+                csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.levelCategory || r.placement}","${b.numbers || '-'}","${b.geometry || '-'}","${b.measurement || '-'}","${b.word_problems || '-'}",${r.tabSwitches || 0},"${r.date}",${idx + 1},"${d.category || '-'}","${(d.skill || '').replace(/"/g, '""')}","${(d.question || '').replace(/"/g, '""')}","${(d.selectedAnswer || '').replace(/"/g, '""')}","${(d.correctAnswer || '').replace(/"/g, '""')}","${status}"\n`;
+            });
+        } else {
+            csv += `"${r.name.replace(/"/g, '""')}","${r.timeTaken || 'N/A'}",${r.score},${r.total},${r.percentage}%,"${r.levelCategory || r.placement}","${b.numbers || '-'}","${b.geometry || '-'}","${b.measurement || '-'}","${b.word_problems || '-'}",${r.tabSwitches || 0},"${r.date}",N/A,N/A,N/A,N/A,N/A,N/A,N/A\n`;
+        }
+    });
+
+    let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "MAGE_Math_Diagnostic_Class_Results.csv";
+    link.click();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        let mins = Math.floor(timeRemaining / 60);
+        let secs = timeRemaining % 60;
+        document.getElementById("timeDisplay").textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            finishTest();
+        }
+    }, 1000);
+}
+
+function getFormattedTimeTaken() {
+    if (!testStartTime) return "N/A";
+    let elapsedSeconds = Math.floor((Date.now() - testStartTime) / 1000);
+    let mins = Math.floor(elapsedSeconds / 60);
+    let secs = elapsedSeconds % 60;
+    return `${mins}m ${secs}s`;
+}
+
+function getNextAdaptiveQuestion(targetLevel) {
+    let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
+    if (candidates.length === 0) {
+        candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
+    }
+    if (candidates.length === 0) return null;
+    let selected = candidates[Math.floor(Math.random() * candidates.length)];
+    usedQuestionIds.add(selected.id);
+    return selected;
+}
+
+function startTest() {
+    studentName = document.getElementById("studentName").value.trim();
+    if (!studentName) {
+        alert("Please enter student name.");
+        return;
+    }
+
+    currentQuestionIndex = 0;
+    score = 0;
+    tabSwitchCount = 0;
+    isTestActive = true;
+    testStartTime = Date.now();
+    studentAnswersList = [];
+    usedQuestionIds.clear();
+    activeQuestionsSequence = [];
+    currentAdaptationLevel = 1;
+
+    let firstQ = getNextAdaptiveQuestion(1);
+    if (firstQ) activeQuestionsSequence.push(firstQ);
+
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("testScreen").classList.remove("hidden");
+    startTimer();
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const q = activeQuestionsSequence[currentQuestionIndex];
+    document.getElementById("questionNumber").textContent = `${currentQuestionIndex + 1}`;
+
+    let html = `
+        <div class="question">${q.title}</div>
+        ${q.options.map((opt, idx) => `
+            <label class="option">
+                <input type="radio" name="standard_answer" value="${idx}">
+                <span>${opt}</span>
+            </label>
+        `).join('')}
+    `;
+
+    document.getElementById("questionArea").innerHTML = html;
+}
+
+function submitAnswer() {
+    const q = activeQuestionsSequence[currentQuestionIndex];
+    const selected = document.querySelector('input[name="standard_answer"]:checked');
+    
+    if (!selected) {
+        alert("Please select an answer.");
+        return;
+    }
+
+    const selectedIndex = Number(selected.value);
+    const isCorrect = selectedIndex === q.correct;
+    
+    if (isCorrect) {
+        score++;
+        currentAdaptationLevel = 2; 
+    } else {
+        currentAdaptationLevel = 1; 
+    }
+
+    studentAnswersList.push({
+        question: q.title,
+        category: q.category,
+        skill: q.skill,
+        selectedAnswer: q.options[selectedIndex],
+        correctAnswer: q.options[q.correct],
+        isCorrect: isCorrect
+    });
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < MAX_TEST_QUESTIONS) {
+        let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel);
+        if (nextQ) {
+            activeQuestionsSequence.push(nextQ);
+            renderQuestion();
+        } else {
+            finishTest();
+        }
+    } else {
+        finishTest();
+    }
+}
+
+function calculateCategoryBreakdown() {
+    let totals = {
+        numbers: { correct: 0, total: 0 },
+        geometry: { correct: 0, total: 0 },
+        measurement: { correct: 0, total: 0 },
+        word_problems: { correct: 0, total: 0 }
+    };
+
+    studentAnswersList.forEach(ans => {
+        let cat = ans.category || "numbers";
+        if (totals[cat]) {
+            totals[cat].total++;
+            if (ans.isCorrect) totals[cat].correct++;
+        }
+    });
+
+    let breakdown = {};
+    for (let key in totals) {
+        if (totals[key].total > 0) {
+            let pct = Math.round((totals[key].correct / totals[key].total) * 100);
+            breakdown[key] = `${pct}% (${totals[key].correct}/${totals[key].total})`;
+        } else {
+            breakdown[key] = "-";
+        }
+    }
+
+    return breakdown;
+}
+
+function finishTest() {
+    if (!isTestActive && document.getElementById("testScreen").classList.contains("hidden")) return;
+    
+    isTestActive = false;
+    clearInterval(timerInterval);
+    document.getElementById("testScreen").classList.add("hidden");
+    document.getElementById("resultScreen").classList.remove("hidden");
+
+    let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
+    let percentage = Math.round((score / totalPoints) * 100);
+    
+    // Explicit Level Category Designation
+    let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate Math)" : "Level 1 (Foundational Math)";
+
+    document.getElementById("displayStudentName").textContent = studentName;
+    document.getElementById("placementDisplay").textContent = `Assigned Level: ${targetLevel}`;
+    
+    sendToCloudDatabase(percentage, targetLevel, totalPoints);
+}
+
+function sendToCloudDatabase(percentage, targetLevel, total) {
+    document.getElementById("savingMessage").textContent = "Submitting to central database...";
+    
+    const breakdown = calculateCategoryBreakdown();
+    const timeTaken = getFormattedTimeTaken();
+
+    const data = {
+        name: studentName,
+        timeTaken: timeTaken,
+        score: score,
+        total: total,
+        percentage: percentage,
+        placement: targetLevel,
+        tabSwitches: tabSwitchCount,
+        breakdown: breakdown,
+        date: new Date().toLocaleDateString(),
+        details: studentAnswersList
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+    })
+    .then(() => {
+        document.getElementById("savingMessage").textContent = "Assessment submitted successfully!";
+    })
+    .catch(() => {
+        document.getElementById("savingMessage").textContent = "Submission recorded. Please check connection if missing from Sheet.";
+    });
+}
+</script>
+
+</body>
+</html>
