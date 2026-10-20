@@ -333,16 +333,65 @@ button:hover {
     margin-bottom: 5px;
 }
 
-.algo-badge {
-    display: inline-block;
-    background: #eff6ff;
-    border: 1px solid #93c5fd;
-    color: var(--primary-color);
-    padding: 4px 10px;
+/* PROPER FRACTION STYLING */
+.frac {
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.9em;
+    padding: 0 4px;
+}
+.frac .top {
+    border-bottom: 2px solid #333;
+    padding-bottom: 1px;
+}
+.frac .bottom {
+    padding-top: 1px;
+}
+
+/* COLUMN WORKING GRID STYLING */
+.column-grid-wrapper {
+    background: #f8fafc;
+    border: 2px dashed #0f4c81;
+    padding: 20px;
     border-radius: 12px;
-    font-size: 12px;
+    margin: 20px 0;
+    max-width: 320px;
+}
+
+.column-grid-table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.column-grid-table td {
+    padding: 4px;
+    text-align: center;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
+}
+
+.column-input {
+    width: 42px;
+    height: 42px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #0f4c81;
+    border-radius: 6px;
+    padding: 0 !important;
+}
+
+.column-input.regroup-box {
+    border-color: #16a34a;
+    background: #f0fdf4;
+    font-size: 15px;
+    height: 32px;
+}
+
+.grid-line {
+    border-bottom: 3px solid #333 !important;
 }
 </style>
 </head>
@@ -365,14 +414,14 @@ button:hover {
     </div>
 
     <h1>Mathematics Diagnostic Assessment</h1>
-    <p class="subtitle">Adaptive Multi-Level Placement Test for Primary Learners</p>
+    <p class="subtitle">Multi-Topic Placement Assessment for Primary Learners</p>
 
     <div class="instructions-box">
         <b>📌 Assessment Instructions:</b>
         <ul>
-
-            <li>Total Assessment: <b>25 Adaptable Questions</b> | Time Limit: <b>30 Minutes</b>.</li>
-            
+            <li>Evaluates <b>Numbers & Operations, Geometry, Measurement, Word Problems, and Column Calculation Methods</b>.</li>
+            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>.</li>
+            <li>Type individual digits directly into place-value column boxes for method questions.</li>
             <li><b>Strict Window Policy:</b> Tab switching is actively monitored (Max 3 warnings).</li>
         </ul>
     </div>
@@ -392,7 +441,6 @@ button:hover {
     <div class="header-status">
         <div>
             <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
-            <div id="currentLevelBadge" class="algo-badge">Level 1 (Foundational Item)</div>
         </div>
         <div class="timer-box">Time Left: <span id="timeDisplay">30:00</span></div>
     </div>
@@ -446,12 +494,12 @@ button:hover {
                 <th>Time Taken</th>
                 <th>Score</th>
                 <th>%</th>
-                <th>Level Category</th>
+                <th>Category Assessment</th>
                 <th>Numbers %</th>
                 <th>Geometry %</th>
                 <th>Measurement %</th>
                 <th>Word Problems %</th>
-                <th>Method of Add/Sub (Regrouping) %</th>
+                <th>Column Working Method %</th>
                 <th>Tab Switches</th>
                 <th>Action</th>
             </tr>
@@ -517,27 +565,32 @@ function handleTabSwitch() {
     }
 }
 
+// PROPER FRACTION HTML BUILDER
+function frac(n, d) {
+    return `<span class="frac"><span class="top">${n}</span><span class="bottom">${d}</span></span>`;
+}
+
 const questionPool = [
     // --- LEVEL 1 (FOUNDATIONAL PRIMARY) ---
     { id: 1, level: 1, category: "numbers", skill: "Addition: Single & Double Digit", title: "What is 15 + 8?", options: ["21", "22", "23"], correct: 2 },
     { id: 2, level: 1, category: "numbers", skill: "Subtraction: Basic", title: "What is 20 - 7?", options: ["13", "14", "12"], correct: 0 },
-    { id: 3, level: 1, category: "regrouping", skill: "Addition Without Regrouping", type: "text_working", title: "Solve: 23 + 14. Type the answer and explain or show your steps without regrouping:", correctKeywords: ["37"], correctDisplay: "37 (20+10=30, 3+4=7)" },
+    { id: 3, level: 1, category: "regrouping", skill: "Addition Without Regrouping", type: "column_grid", title: "Solve 23 + 14 by typing each digit into the Tens and Ones column boxes below:", num1: "23", num2: "14", op: "+", correctAns: "37", decimal: false },
     { id: 4, level: 1, category: "geometry", skill: "2D Shapes", title: "Which shape has 3 sides and 3 corners?", options: ["Square", "Triangle", "Circle"], correct: 1 },
     { id: 5, level: 1, category: "geometry", skill: "Shape Properties", title: "How many sides does a rectangle have?", options: ["4", "3", "5"], correct: 0 },
     { id: 6, level: 1, category: "numbers", skill: "Place Value: Tens & Ones", title: "In the number 47, which digit is in the tens place?", options: ["7", "4", "40"], correct: 1 },
-    { id: 7, level: 1, category: "regrouping", skill: "Addition With Regrouping", type: "text_working", title: "Solve: 28 + 15. Type the step-by-step method showing how you regrouped the ones into tens:", correctKeywords: ["43"], correctDisplay: "43 (8+5=13, carry 1 ten)" },
+    { id: 7, level: 1, category: "regrouping", skill: "Addition With Regrouping", type: "column_grid", title: "Solve 28 + 15 by typing each digit in the column boxes (use top box for carrying):", num1: "28", num2: "15", op: "+", correctAns: "43", decimal: false },
     { id: 8, level: 1, category: "measurement", skill: "Time Reading", title: "If the short hand points to 3 and the long hand points to 12, what time is it?", options: ["12:03", "3:00", "3:12"], correct: 1 },
     { id: 9, level: 1, category: "word_problems", skill: "Word Problems: Addition", title: "Tom has 6 marbles. Mia gives him 5 more. How many marbles does Tom have in total?", options: ["11", "10", "12"], correct: 0 },
     { id: 10, level: 1, category: "word_problems", skill: "Word Problems: Subtraction", title: "There were 12 birds on a tree. 4 flew away. How many birds are left?", options: ["6", "8", "7"], correct: 1 },
     { id: 11, level: 1, category: "numbers", skill: "Comparing Numbers", title: "Which symbol makes this statement true? 28 ____ 32", options: [">", "<", "="], correct: 1 },
     { id: 12, level: 1, category: "numbers", skill: "Even & Odd Numbers", title: "Which of the following numbers is an EVEN number?", options: ["9", "13", "16"], correct: 2 },
-    { id: 13, level: 1, category: "regrouping", skill: "Subtraction Without Regrouping", type: "text_working", title: "Solve: 48 - 23. Type your answer and show your calculation method:", correctKeywords: ["25"], correctDisplay: "25 (8-3=5, 40-20=20)" },
+    { id: 13, level: 1, category: "regrouping", skill: "Subtraction Without Regrouping", type: "column_grid", title: "Solve 48 - 23 in columns by typing each answer digit:", num1: "48", num2: "23", op: "-", correctAns: "25", decimal: false },
     { id: 14, level: 1, category: "numbers", skill: "Basic Division", title: "Share 10 sweets equally between 2 children. How many sweets does each child get?", options: ["5", "2", "4"], correct: 0 },
     { id: 15, level: 1, category: "geometry", skill: "3D Shapes", title: "Which shape looks like a football?", options: ["Cube", "Sphere", "Cylinder"], correct: 1 },
     { id: 16, level: 1, category: "measurement", skill: "Days of the Week", title: "What day comes directly after Tuesday?", options: ["Monday", "Wednesday", "Thursday"], correct: 1 },
-    { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", title: "What fraction represents half of an apple?", options: ["1/2", "1/4", "1/3"], correct: 0 },
+    { id: 17, level: 1, category: "numbers", skill: "Fractions: Visual Halves", get title() { return `What fraction represents half of an apple?`; }, get options() { return [frac(1,2), frac(1,4), frac(1,3)]; }, correct: 0 },
     { id: 18, level: 1, category: "word_problems", skill: "Word Problems: Grouping", title: "Each cat has 4 legs. How many legs do 3 cats have altogether?", options: ["7", "12", "10"], correct: 1 },
-    { id: 19, level: 1, category: "regrouping", skill: "Subtraction With Regrouping", type: "text_working", title: "Solve: 52 - 17. Type your answer and describe how you borrowed/regrouped from the tens:", correctKeywords: ["35"], correctDisplay: "35 (borrow 1 ten to make 12 ones: 12-7=5, 4-1=3)" },
+    { id: 19, level: 1, category: "regrouping", skill: "Subtraction With Regrouping", type: "column_grid", title: "Solve 52 - 17 in columns (type each digit in place value boxes):", num1: "52", num2: "17", op: "-", correctAns: "35", decimal: false },
     { id: 20, level: 1, category: "numbers", skill: "Place Value Identification", title: "What is the value of 5 in 152?", options: ["5", "50", "500"], correct: 1 },
     { id: 21, level: 1, category: "measurement", skill: "Currency & Money", title: "How many 10-cent coins make 50 cents?", options: ["4", "5", "6"], correct: 1 },
     { id: 22, level: 1, category: "word_problems", skill: "Word Problems: Money", title: "Anna bought a book for $4 and a pen for $2. How much did she spend in total?", options: ["$6", "$8", "$2"], correct: 0 },
@@ -547,18 +600,18 @@ const questionPool = [
 
     // --- LEVEL 2 (INTERMEDIATE PRIMARY) ---
     { id: 26, level: 2, category: "numbers", skill: "Multiplication Tables", title: "What is 8 × 7?", options: ["54", "56", "64"], correct: 1 },
-    { id: 27, level: 2, category: "regrouping", skill: "3-Digit Addition With Regrouping", type: "text_working", title: "Solve: 267 + 155. Type your answer and detail the step-by-step regrouping method used:", correctKeywords: ["422"], correctDisplay: "422 (7+5=12 carry 1, 6+5+1=12 carry 1, 2+1+1=4)" },
-    { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", title: "Which fraction is equivalent to 2/4?", options: ["1/3", "1/2", "3/4"], correct: 1 },
+    { id: 27, level: 2, category: "regrouping", skill: "Decimal Addition With Regrouping", type: "column_grid", title: "Solve 14.8 + 7.5 by typing each digit into the Tens, Ones, and Tenths column boxes:", num1: "14.8", num2: "7.5", op: "+", correctAns: "22.3", decimal: true },
+    { id: 28, level: 2, category: "numbers", skill: "Equivalent Fractions", get title() { return `Which fraction is equivalent to ${frac(2,4)}?`; }, get options() { return [frac(1,3), frac(1,2), frac(3,4)]; }, correct: 1 },
     { id: 29, level: 2, category: "geometry", skill: "Perimeter", title: "A rectangle has a length of 6 cm and a width of 4 cm. What is its perimeter?", options: ["24 cm", "20 cm", "10 cm"], correct: 1 },
     { id: 30, level: 2, category: "geometry", skill: "Area", title: "What is the area of a square with side lengths of 5 cm?", options: ["20 cm²", "25 cm²", "10 cm²"], correct: 1 },
-    { id: 31, level: 2, category: "regrouping", skill: "3-Digit Subtraction Across Zeros", type: "text_working", title: "Solve: 500 - 238. Type your answer and explain how you regrouped across zeros:", correctKeywords: ["262"], correctDisplay: "262 (regroup 500 into 4 hundreds 9 tens 10 ones)" },
+    { id: 31, level: 2, category: "regrouping", skill: "3-Digit Addition With Regrouping", type: "column_grid", title: "Solve 267 + 155 by entering each digit into the Hundreds, Tens, and Ones boxes:", num1: "267", num2: "155", op: "+", correctAns: "422", decimal: false, 3digit: true },
     { id: 32, level: 2, category: "numbers", skill: "Decimals", title: "What is 3.5 + 2.4?", options: ["5.9", "6.1", "5.1"], correct: 0 },
     { id: 33, level: 2, category: "measurement", skill: "Unit Conversions", title: "How many centimeters are in 3 meters?", options: ["30 cm", "300 cm", "3000 cm"], correct: 1 },
     { id: 34, level: 2, category: "measurement", skill: "Elapsed Time", title: "A movie starts at 2:15 PM and lasts 1 hour and 30 minutes. What time does it end?", options: ["3:45 PM", "3:30 PM", "4:15 PM"], correct: 0 },
     { id: 35, level: 2, category: "numbers", skill: "Order of Operations", title: "Calculate: 10 + 2 × 5", options: ["60", "20", "25"], correct: 1 },
-    { id: 36, level: 2, category: "numbers", skill: "Adding Fractions", title: "What is 3/8 + 2/8?", options: ["5/16", "5/8", "1/8"], correct: 1 },
+    { id: 36, level: 2, category: "numbers", skill: "Adding Fractions", get title() { return `What is ${frac(3,8)} + ${frac(2,8)}?`; }, get options() { return [frac(5,16), frac(5,8), frac(1,8)]; }, correct: 1 },
     { id: 37, level: 2, category: "geometry", skill: "Angles", title: "What type of angle measures exactly 90 degrees?", options: ["Acute Angle", "Right Angle", "Obtuse Angle"], correct: 1 },
-    { id: 38, level: 2, category: "word_problems", skill: "Word Problems: Fractions", title: "A pizza has 8 slices. Sarah eats 3 slices. What fraction of the pizza is remaining?", options: ["3/8", "5/8", "1/2"], correct: 1 },
+    { id: 38, level: 2, category: "word_problems", skill: "Word Problems: Fractions", get title() { return `A pizza has 8 slices. Sarah eats 3 slices. What fraction of the pizza is remaining?`; }, get options() { return [frac(3,8), frac(5,8), frac(1,2)]; }, correct: 1 },
     { id: 39, level: 2, category: "numbers", skill: "Percentages", title: "What is 50% of 80?", options: ["40", "20", "50"], correct: 0 },
     { id: 40, level: 2, category: "measurement", skill: "Mass & Weight", title: "How many grams are equal to 2.5 kilograms?", options: ["250 g", "2500 g", "25000 g"], correct: 1 },
     { id: 41, level: 2, category: "word_problems", skill: "Word Problems: Money & Change", title: "David bought a toy for $13.50 and paid with a $20 note. How much change should he receive?", options: ["$6.50", "$7.50", "$5.50"], correct: 0 },
@@ -569,19 +622,16 @@ const questionPool = [
     { id: 46, level: 2, category: "geometry", skill: "3D Nets", title: "How many flat square faces does a cube have?", options: ["4", "6", "8"], correct: 1 },
     { id: 47, level: 2, category: "numbers", skill: "Factors & Multiples", title: "Which of the following is a factor of 24?", options: ["5", "8", "9"], correct: 1 },
     { id: 48, level: 2, category: "measurement", skill: "Data & Charts", title: "If 1 symbol on a pictograph equals 4 books, how many books do 3.5 symbols represent?", options: ["12", "14", "16"], correct: 1 },
-    { id: 49, level: 2, category: "regrouping", skill: "Decimal Addition With Regrouping", type: "text_working", title: "Solve: 14.8 + 7.5. Type your answer and show your addition method:", correctKeywords: ["22.3"], correctDisplay: "22.3 (0.8+0.5=1.3 carry 1, 14+7+1=22)" },
+    { id: 49, level: 2, category: "regrouping", skill: "3-Digit Subtraction Across Zeros", type: "column_grid", title: "Solve 500 - 238 in columns by entering each digit below:", num1: "500", num2: "238", op: "-", correctAns: "262", decimal: false, 3digit: true },
     { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
 ];
 
 function getNextAdaptiveQuestion(targetLevel) {
     let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
-    
     if (candidates.length === 0) {
         candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
     }
-    
     if (candidates.length === 0) return null;
-    
     let selected = candidates[Math.floor(Math.random() * candidates.length)];
     usedQuestionIds.add(selected.id);
     return selected;
@@ -593,18 +643,21 @@ function submitAnswer() {
     let selectedAnswerText = "";
     let correctAnswerText = "";
 
-    if (q.type === 'text_working') {
-        const inputElem = document.getElementById("typedWorkingAnswer");
-        if (!inputElem || !inputElem.value.trim()) {
-            alert("Please type your answer and method before submitting.");
+    if (q.type === 'column_grid') {
+        const digitInputs = document.querySelectorAll('.col-ans-digit');
+        let constructedAns = "";
+        digitInputs.forEach(inp => {
+            constructedAns += inp.value.trim();
+        });
+
+        if (!constructedAns) {
+            alert("Please enter digits in the column answer boxes before submitting.");
             return;
         }
 
-        selectedAnswerText = inputElem.value.trim();
-        correctAnswerText = q.correctDisplay || q.correctKeywords.join(", ");
-
-        // Check if student's answer contains the core correct answer keyword
-        isCorrect = q.correctKeywords.some(kw => selectedAnswerText.includes(kw));
+        selectedAnswerText = constructedAns;
+        correctAnswerText = q.correctAns;
+        isCorrect = (constructedAns === q.correctAns);
 
     } else {
         const selected = document.querySelector('input[name="standard_answer"]:checked');
@@ -615,8 +668,14 @@ function submitAnswer() {
 
         const selectedIndex = Number(selected.value);
         isCorrect = selectedIndex === q.correct;
-        selectedAnswerText = q.options[selectedIndex];
-        correctAnswerText = q.options[q.correct];
+        
+        // Strip HTML tags for reporting strings
+        let tempDiv = document.createElement("div");
+        tempDiv.innerHTML = q.options[selectedIndex];
+        selectedAnswerText = tempDiv.textContent || tempDiv.innerText || "";
+        
+        tempDiv.innerHTML = q.options[q.correct];
+        correctAnswerText = tempDiv.textContent || tempDiv.innerText || "";
     }
     
     if (isCorrect) {
@@ -627,7 +686,7 @@ function submitAnswer() {
     }
 
     studentAnswersList.push({
-        question: q.title,
+        question: q.title.replace(/<[^>]*>/g, ''),
         category: q.category,
         skill: q.skill,
         selectedAnswer: selectedAnswerText,
@@ -692,7 +751,7 @@ function finishTest() {
     let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
     let percentage = Math.round((score / totalPoints) * 100);
     
-    let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate Math)" : "Level 1 (Foundational Math)";
+    let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate)" : "Level 1 (Foundational)";
 
     document.getElementById("displayStudentName").textContent = studentName;
     document.getElementById("placementDisplay").textContent = `Assigned Level: ${targetLevel}`;
@@ -777,7 +836,7 @@ function viewStudentDetails(index) {
     if (!student) return;
 
     document.getElementById("modalStudentName").textContent = student.name;
-    document.getElementById("modalMeta").textContent = `Time Elapsed: ${student.timeTaken || 'N/A'} | Score: ${student.score}/${student.total} (${student.percentage}%) | Level: ${student.levelCategory || student.placement} | Tab Switches: ${student.tabSwitches || 0}`;
+    document.getElementById("modalMeta").textContent = `Time Elapsed: ${student.timeTaken || 'N/A'} | Score: ${student.score}/${student.total} (${student.percentage}%) | Category: ${student.levelCategory || student.placement} | Tab Switches: ${student.tabSwitches || 0}`;
 
     let html = "";
     if (student.details && student.details.length > 0) {
@@ -792,8 +851,8 @@ function viewStudentDetails(index) {
                         <span class="${statusClass}">${statusText}</span>
                     </div>
                     <div style="font-size:14px; color:#444; margin-bottom:8px;">${item.question}</div>
-                    <div style="font-size:13px; margin-bottom: 4px;"><b>Selected Answer / Method Typed:</b> ${item.selectedAnswer}</div>
-                    <div style="font-size:13px;"><b>Correct Answer / Model Method:</b> ${item.correctAnswer}</div>
+                    <div style="font-size:13px; margin-bottom: 4px;"><b>Student Answer:</b> ${item.selectedAnswer}</div>
+                    <div style="font-size:13px;"><b>Correct Answer:</b> ${item.correctAnswer}</div>
                 </div>
             `;
         });
@@ -820,7 +879,7 @@ function exportClassExcel() {
         return;
     }
 
-    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Level Category,Numbers %,Geometry %,Measurement %,Word Problems %,Method of Add/Sub (Regrouping) %,Tab Switches,Date,Question Number,Category,Skill,Question Text,Student Answer/Typed Method,Correct Answer/Model Method,Status\n";
+    let csv = "\uFEFFStudent Name,Time Taken,Score,Total Attempted,Percentage,Level Category,Numbers %,Geometry %,Measurement %,Word Problems %,Column Working Method %,Tab Switches,Date,Question Number,Category,Skill,Question Text,Student Answer,Correct Answer,Status\n";
     
     records.forEach(r => {
         let b = r.breakdown || {};
@@ -891,26 +950,52 @@ function startTest() {
 function renderQuestion() {
     const q = activeQuestionsSequence[currentQuestionIndex];
     document.getElementById("questionNumber").textContent = `${currentQuestionIndex + 1}`;
-    
-    const badge = document.getElementById("currentLevelBadge");
-    if (q.level === 2) {
-        badge.textContent = "Level 2 (Intermediate Item)";
-        badge.style.background = "#f0fdf4";
-        badge.style.borderColor = "#16a34a";
-        badge.style.color = "#16a34a";
-    } else {
-        badge.textContent = "Level 1 (Foundational Item)";
-        badge.style.background = "#eff6ff";
-        badge.style.borderColor = "#93c5fd";
-        badge.style.color = "#0f4c81";
-    }
 
     let html = `<div class="question">${q.title}</div>`;
 
-    if (q.type === 'text_working') {
+    if (q.type === 'column_grid') {
+        let isDec = q.decimal || false;
+        let is3D = q.3digit || false;
+        
+        let n1Parts = q.num1.split('.');
+        let n2Parts = q.num2.split('.');
+
         html += `
-            <div style="margin-top:15px;">
-                <textarea id="typedWorkingAnswer" rows="4" placeholder="Type your answer and explain your working/method here (e.g., 43 because 8+5=13, carry 1 ten)..."></textarea>
+            <div class="column-grid-wrapper">
+                <table class="column-grid-table">
+                    <!-- REGROUPING / CARRY OVER HEADERS -->
+                    <tr>
+                        <td></td>
+                        ${is3D ? '<td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
+                        <td><input type="text" maxlength="1" class="column-input regroup-box"></td>
+                        <td><input type="text" maxlength="1" class="column-input regroup-box"></td>
+                        ${isDec ? '<td></td><td><input type="text" maxlength="1" class="column-input regroup-box"></td>' : ''}
+                    </tr>
+                    <!-- FIRST NUMBER -->
+                    <tr>
+                        <td></td>
+                        ${is3D ? `<td>${n1Parts[0].length > 2 ? n1Parts[0][0] : ''}</td>` : ''}
+                        <td>${n1Parts[0].length > 1 ? n1Parts[0][n1Parts[0].length-2] : ''}</td>
+                        <td>${n1Parts[0][n1Parts[0].length-1]}</td>
+                        ${isDec ? `<td>.</td><td>${n1Parts[1] || '0'}</td>` : ''}
+                    </tr>
+                    <!-- SECOND NUMBER -->
+                    <tr>
+                        <td style="color:var(--primary-color); padding-right:8px;">${q.op}</td>
+                        ${is3D ? `<td>${n2Parts[0].length > 2 ? n2Parts[0][0] : (n2Parts[0].length > 1 && !is3D ? '' : '')}</td>` : ''}
+                        <td>${n2Parts[0].length > 1 ? n2Parts[0][n2Parts[0].length-2] : ''}</td>
+                        <td>${n2Parts[0][n2Parts[0].length-1]}</td>
+                        ${isDec ? `<td>.</td><td>${n2Parts[1] || '0'}</td>` : ''}
+                    </tr>
+                    <!-- RESULT ROW WITH INDIVIDUAL DIGIT INPUT BOXES -->
+                    <tr>
+                        <td class="grid-line"></td>
+                        ${is3D ? '<td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>' : ''}
+                        <td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>
+                        <td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>
+                        ${isDec ? '<td class="grid-line">.</td><td class="grid-line"><input type="text" maxlength="1" class="column-input col-ans-digit"></td>' : ''}
+                    </tr>
+                </table>
             </div>
         `;
     } else {
