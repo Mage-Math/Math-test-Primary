@@ -331,6 +331,18 @@ button:hover {
 .instructions-box li {
     margin-bottom: 5px;
 }
+
+.algo-badge {
+    display: inline-block;
+    background: #eff6ff;
+    border: 1px solid #93c5fd;
+    color: var(--primary-color);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 </style>
 </head>
 
@@ -346,22 +358,22 @@ button:hover {
 
     <div class="header-logo">
         <div class="logo-container">
-            <!-- EMBEDDED LOGO WITH LOCAL FILE FALLBACK -->
             <img src="logo.png" alt="MAGE HYBRID LEARNING" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 350 60\' width=\'280\' height=\'50\'><text x=\'0\' y=\'40\' font-family=\'Segoe UI, sans-serif\' font-size=\'32\' font-weight=\'800\' fill=\'%230f4c81\'>MAGE <tspan fill=\'%2316a34a\'>HYBRID LEARNING</tspan></text></svg>';">
             <div id="altLogo" class="logo-fallback" style="display:none;">MAGE <span>HYBRID LEARNING</span></div>
         </div>
     </div>
 
     <h1>Mathematics Diagnostic Assessment</h1>
-    <p class="subtitle">Comprehensive Numbers, Geometry, Measurement & Problem Solving Placement Test</p>
+    <p class="subtitle">Adaptive Multi-Level Placement Test for Primary Learners</p>
 
     <div class="instructions-box">
-        <b>📌 Assessment Instructions:</b>
+        <b>📌 Adaptive Assessment Instructions:</b>
         <ul>
-            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, and Word Problems</b> skills.</li>
-            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>.</li>
-            <li>Classifies students into <b>Level 1 (Foundational)</b> or <b>Level 2 (Intermediate)</b>.</li>
-            <li><b>Strict Window Policy:</b> Switching tabs is strictly monitored (Max 3 warnings).</li>
+            <li><b>Real-Time Adaptive Algorithm:</b> Questions dynamically adjust based on your answers to evaluate true capability[cite: 1].</li>
+            <li>Evaluates <b>Numbers & Operations, Geometry & Shapes, Measurement & Data, and Word Problems</b>[cite: 1].</li>
+            <li>Total Assessment: <b>25 Adaptable Questions</b> (Out of 50 Pool) | Time Limit: <b>30 Minutes</b>[cite: 1].</li>
+            <li>Categorizes students into <b>Level 1 (Foundational)</b> or <b>Level 2 (Intermediate)</b>[cite: 1].</li>
+            <li><b>Strict Window Policy:</b> Tab switching is actively monitored (Max 3 warnings)[cite: 1].</li>
         </ul>
     </div>
 
@@ -378,12 +390,15 @@ button:hover {
 <!-- TEST SCREEN -->
 <div id="testScreen" class="hidden">
     <div class="header-status">
-        <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
+        <div>
+            <div class="progress">Question <span id="questionNumber">1</span> of 25</div>
+            <div id="currentLevelBadge" class="algo-badge">Level 1 (Foundational Item)</div>
+        </div>
         <div class="timer-box">Time Left: <span id="timeDisplay">30:00</span></div>
     </div>
 
     <div id="tabWarning" class="warning-banner hidden">
-        ⚠️ Warning: Switching tabs is strictly prohibited! Recorded Violations: <span id="switchCountDisplay">0</span> / 3
+        ⚠️ Warning: Switching tabs is strictly prohibited! Recorded Violations: <span id="switchCountDisplay">0</span> / 3[cite: 1]
     </div>
 
     <div id="questionArea"></div>
@@ -401,7 +416,7 @@ button:hover {
         <div class="result-box">
             <h2 style="color: var(--primary-color); margin-top:0;">Thank You, <span id="displayStudentName"></span>!</h2>
             <p style="font-size: 18px; color: #444; margin-top: 15px;">
-                Your performance profile has been saved.
+                Your adaptive performance analysis has been processed and saved[cite: 1].
             </p>
             <p id="placementDisplay" style="font-size: 19px; font-weight: bold; color: var(--primary-color);"></p>
             <p id="autoSubmitReason" style="color: #dc2626; font-weight: bold;"></p>
@@ -417,7 +432,7 @@ button:hover {
         <button class="teacher-btn" onclick="exitTeacherPortal()">Exit Portal</button>
     </div>
     <h1>Teacher / Admin Dashboard</h1>
-    <p class="subtitle">Detailed Skills Diagnostic & Roster Management</p>
+    <p class="subtitle">Detailed Skills Diagnostic & Roster Management[cite: 1]</p>
 
     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
         <button class="btn-secondary" onclick="exportClassExcel()">📊 Export Results for MS Excel</button>
@@ -458,45 +473,46 @@ button:hover {
 </div>
 
 <script>
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc8jh-K8C6g0xlT4jthiX5rzzWrhX7yYravg6Pz9vkUe_pgnGfkPqlKps59D6veey_/exec"; 
-const TEACHER_PIN = "egam@2026";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc8jh-K8C6g0xlT4jthiX5rzzWrhX7yYravg6Pz9vkUe_pgnGfkPqlKps59D6veey_/exec";[cite: 1]
+const TEACHER_PIN = "egam@2026";[cite: 1]
 
-const TIME_LIMIT_SECONDS = 30 * 60;
-const MAX_TAB_SWITCHES = 3;
-const MAX_TEST_QUESTIONS = 25;
+const TIME_LIMIT_SECONDS = 30 * 60;[cite: 1]
+const MAX_TAB_SWITCHES = 3;[cite: 1]
+const MAX_TEST_QUESTIONS = 25;[cite: 1]
 
-let studentName = "";
-let currentQuestionIndex = 0;
-let score = 0;
+let studentName = "";[cite: 1]
+let currentQuestionIndex = 0;[cite: 1]
+let score = 0;[cite: 1]
 
-let studentAnswersList = [];
-let currentLoadedRecords = [];
+let studentAnswersList = [];[cite: 1]
+let currentLoadedRecords = [];[cite: 1]
 
-let timerInterval = null;
-let timeRemaining = TIME_LIMIT_SECONDS;
-let testStartTime = null;
+let timerInterval = null;[cite: 1]
+let timeRemaining = TIME_LIMIT_SECONDS;[cite: 1]
+let testStartTime = null;[cite: 1]
 
-let tabSwitchCount = 0;
-let isTestActive = false;
+let tabSwitchCount = 0;[cite: 1]
+let isTestActive = false;[cite: 1]
 
-let activeQuestionsSequence = [];
-let currentAdaptationLevel = 1; 
-let usedQuestionIds = new Set();
+/* ADAPTIVE ALGORITHM CONTROL VARIABLES */
+let activeQuestionsSequence = [];[cite: 1]
+let currentAdaptationLevel = 1; // 1 = Level 1 (Foundational), 2 = Level 2 (Intermediate)[cite: 1]
+let usedQuestionIds = new Set();[cite: 1]
 
-document.addEventListener("visibilitychange", handleTabSwitch);
+document.addEventListener("visibilitychange", handleTabSwitch);[cite: 1]
 
 function handleTabSwitch() {
     if (document.hidden && isTestActive) {
-        tabSwitchCount++;
-        document.getElementById("tabWarning").classList.remove("hidden");
-        document.getElementById("switchCountDisplay").textContent = tabSwitchCount;
+        tabSwitchCount++;[cite: 1]
+        document.getElementById("tabWarning").classList.remove("hidden");[cite: 1]
+        document.getElementById("switchCountDisplay").textContent = tabSwitchCount;[cite: 1]
 
         if (tabSwitchCount > MAX_TAB_SWITCHES) {
-            alert(`Violation threshold exceeded! Switching tabs is strictly prohibited. Your assessment has been automatically submitted.`);
-            document.getElementById("autoSubmitReason").textContent = "Note: Assessment was automatically submitted due to a violation of the tab switch policy.";
-            finishTest();
+            alert(`Violation threshold exceeded! Switching tabs is strictly prohibited. Your assessment has been automatically submitted.`);[cite: 1]
+            document.getElementById("autoSubmitReason").textContent = "Note: Assessment was automatically submitted due to a violation of the tab switch policy.";[cite: 1]
+            finishTest();[cite: 1]
         } else {
-            alert(`WARNING: Switching tabs is strictly prohibited! Violation ${tabSwitchCount} recorded.`);
+            alert(`WARNING: Switching tabs is strictly prohibited! Violation ${tabSwitchCount} recorded.`);[cite: 1]
         }
     }
 }
@@ -556,6 +572,123 @@ const questionPool = [
     { id: 49, level: 2, category: "numbers", skill: "Subtraction with Borrowing", title: "What is 502 - 178?", options: ["324", "334", "328"], correct: 0 },
     { id: 50, level: 2, category: "word_problems", skill: "Algebraic Reasoning", title: "If 3 × ▲ = 27, what is the value of ▲?", options: ["7", "8", "9"], correct: 2 }
 ];
+
+/* ALGORITHM 1: ADAPTIVE ITEM SELECTION ENGINES */
+function getNextAdaptiveQuestion(targetLevel) {
+    let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
+    
+    // Fallback: If no unused items remain at the targeted adaptation level, fetch any unused item
+    if (candidates.length === 0) {
+        candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
+    }
+    
+    if (candidates.length === 0) return null;
+    
+    // Random selection from filtered candidates
+    let selected = candidates[Math.floor(Math.random() * candidates.length)];
+    usedQuestionIds.add(selected.id);
+    return selected;
+}
+
+/* ALGORITHM 2: ANSWER VERIFICATION & ADAPTATION ROUTER */
+function submitAnswer() {
+    const q = activeQuestionsSequence[currentQuestionIndex];
+    const selected = document.querySelector('input[name="standard_answer"]:checked');
+    
+    if (!selected) {
+        alert("Please select an answer.");
+        return;
+    }
+
+    const selectedIndex = Number(selected.value);
+    const isCorrect = selectedIndex === q.correct;
+    
+    if (isCorrect) {
+        score++;
+        // Algorithm step: Increase difficulty level on correct answer
+        currentAdaptationLevel = 2; 
+    } else {
+        // Algorithm step: Recalibrate back to foundational level on error
+        currentAdaptationLevel = 1; 
+    }
+
+    studentAnswersList.push({
+        question: q.title,
+        category: q.category,
+        skill: q.skill,
+        selectedAnswer: q.options[selectedIndex],
+        correctAnswer: q.options[q.correct],
+        isCorrect: isCorrect,
+        questionLevel: q.level
+    });
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < MAX_TEST_QUESTIONS) {
+        let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel);
+        if (nextQ) {
+            activeQuestionsSequence.push(nextQ);
+            renderQuestion();
+        } else {
+            finishTest();
+        }
+    } else {
+        finishTest();
+    }
+}
+
+/* ALGORITHM 3: SKILL CATEGORY BREAKDOWN ALGORITHM */
+function calculateCategoryBreakdown() {
+    let totals = {
+        numbers: { correct: 0, total: 0 },
+        geometry: { correct: 0, total: 0 },
+        measurement: { correct: 0, total: 0 },
+        word_problems: { correct: 0, total: 0 }
+    };
+
+    studentAnswersList.forEach(ans => {
+        let cat = ans.category || "numbers";
+        if (totals[cat]) {
+            totals[cat].total++;
+            if (ans.isCorrect) totals[cat].correct++;
+        }
+    });
+
+    let breakdown = {};
+    for (let key in totals) {
+        if (totals[key].total > 0) {
+            let pct = Math.round((totals[key].correct / totals[key].total) * 100);
+            breakdown[key] = `${pct}% (${totals[key].correct}/${totals[key].total})`;
+        } else {
+            breakdown[key] = "-";
+        }
+    }
+
+    return breakdown;
+}
+
+/* ALGORITHM 4: LEVEL CATEGORIZATION THRESHOLD ALGORITHM */
+function finishTest() {
+    if (!isTestActive && document.getElementById("testScreen").classList.contains("hidden")) return;
+    
+    isTestActive = false;
+    clearInterval(timerInterval);
+    document.getElementById("testScreen").classList.add("hidden");
+    document.getElementById("resultScreen").classList.remove("hidden");
+
+    let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
+    let percentage = Math.round((score / totalPoints) * 100);
+    
+    // Categorization Logic Rules:
+    // If accuracy >= 60%, assign to Level 2 (Intermediate)
+    // If accuracy < 60%, assign to Level 1 (Foundational)
+    let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate Math)" : "Level 1 (Foundational Math)";
+
+    document.getElementById("displayStudentName").textContent = studentName;
+    document.getElementById("placementDisplay").textContent = `Assigned Level: ${targetLevel}`;
+    
+    sendToCloudDatabase(percentage, targetLevel, totalPoints);
+}
 
 function openTeacherLogin() {
     let pin = prompt("Enter Security Passcode to access Teacher Dashboard:");
@@ -718,17 +851,6 @@ function getFormattedTimeTaken() {
     return `${mins}m ${secs}s`;
 }
 
-function getNextAdaptiveQuestion(targetLevel) {
-    let candidates = questionPool.filter(q => q.level === targetLevel && !usedQuestionIds.has(q.id));
-    if (candidates.length === 0) {
-        candidates = questionPool.filter(q => !usedQuestionIds.has(q.id));
-    }
-    if (candidates.length === 0) return null;
-    let selected = candidates[Math.floor(Math.random() * candidates.length)];
-    usedQuestionIds.add(selected.id);
-    return selected;
-}
-
 function startTest() {
     studentName = document.getElementById("studentName").value.trim();
     if (!studentName) {
@@ -758,6 +880,20 @@ function startTest() {
 function renderQuestion() {
     const q = activeQuestionsSequence[currentQuestionIndex];
     document.getElementById("questionNumber").textContent = `${currentQuestionIndex + 1}`;
+    
+    // Update live adaptive level indicator badge
+    const badge = document.getElementById("currentLevelBadge");
+    if (q.level === 2) {
+        badge.textContent = "Level 2 (Intermediate Item)";
+        badge.style.background = "#f0fdf4";
+        badge.style.borderColor = "#16a34a";
+        badge.style.color = "#16a34a";
+    } else {
+        badge.textContent = "Level 1 (Foundational Item)";
+        badge.style.background = "#eff6ff";
+        badge.style.borderColor = "#93c5fd";
+        badge.style.color = "#0f4c81";
+    }
 
     let html = `
         <div class="question">${q.title}</div>
@@ -770,97 +906,6 @@ function renderQuestion() {
     `;
 
     document.getElementById("questionArea").innerHTML = html;
-}
-
-function submitAnswer() {
-    const q = activeQuestionsSequence[currentQuestionIndex];
-    const selected = document.querySelector('input[name="standard_answer"]:checked');
-    
-    if (!selected) {
-        alert("Please select an answer.");
-        return;
-    }
-
-    const selectedIndex = Number(selected.value);
-    const isCorrect = selectedIndex === q.correct;
-    
-    if (isCorrect) {
-        score++;
-        currentAdaptationLevel = 2; 
-    } else {
-        currentAdaptationLevel = 1; 
-    }
-
-    studentAnswersList.push({
-        question: q.title,
-        category: q.category,
-        skill: q.skill,
-        selectedAnswer: q.options[selectedIndex],
-        correctAnswer: q.options[q.correct],
-        isCorrect: isCorrect
-    });
-
-    currentQuestionIndex++;
-
-    if (currentQuestionIndex < MAX_TEST_QUESTIONS) {
-        let nextQ = getNextAdaptiveQuestion(currentAdaptationLevel);
-        if (nextQ) {
-            activeQuestionsSequence.push(nextQ);
-            renderQuestion();
-        } else {
-            finishTest();
-        }
-    } else {
-        finishTest();
-    }
-}
-
-function calculateCategoryBreakdown() {
-    let totals = {
-        numbers: { correct: 0, total: 0 },
-        geometry: { correct: 0, total: 0 },
-        measurement: { correct: 0, total: 0 },
-        word_problems: { correct: 0, total: 0 }
-    };
-
-    studentAnswersList.forEach(ans => {
-        let cat = ans.category || "numbers";
-        if (totals[cat]) {
-            totals[cat].total++;
-            if (ans.isCorrect) totals[cat].correct++;
-        }
-    });
-
-    let breakdown = {};
-    for (let key in totals) {
-        if (totals[key].total > 0) {
-            let pct = Math.round((totals[key].correct / totals[key].total) * 100);
-            breakdown[key] = `${pct}% (${totals[key].correct}/${totals[key].total})`;
-        } else {
-            breakdown[key] = "-";
-        }
-    }
-
-    return breakdown;
-}
-
-function finishTest() {
-    if (!isTestActive && document.getElementById("testScreen").classList.contains("hidden")) return;
-    
-    isTestActive = false;
-    clearInterval(timerInterval);
-    document.getElementById("testScreen").classList.add("hidden");
-    document.getElementById("resultScreen").classList.remove("hidden");
-
-    let totalPoints = studentAnswersList.length || MAX_TEST_QUESTIONS;
-    let percentage = Math.round((score / totalPoints) * 100);
-    
-    let targetLevel = (percentage >= 60) ? "Level 2 (Intermediate Math)" : "Level 1 (Foundational Math)";
-
-    document.getElementById("displayStudentName").textContent = studentName;
-    document.getElementById("placementDisplay").textContent = `Assigned Level: ${targetLevel}`;
-    
-    sendToCloudDatabase(percentage, targetLevel, totalPoints);
 }
 
 function sendToCloudDatabase(percentage, targetLevel, total) {
